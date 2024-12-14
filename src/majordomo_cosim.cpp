@@ -42,7 +42,7 @@ int simpoint_roi = 0;
  * Creates and initialize the state of the RISC-V ISA golden model
  * Returns NULL upon failure.
  */
-dromajo_cosim_state_t *dromajo_cosim_init(int argc, char *argv[]) {
+majordomo_cosim_state_t *majordomo_cosim_init(int argc, char *argv[]) {
     RISCVMachine *m = virt_machine_main(argc, argv);
 
 #ifdef GOLDMEM_INORDER
@@ -53,10 +53,10 @@ dromajo_cosim_state_t *dromajo_cosim_init(int argc, char *argv[]) {
     m->common.pending_interrupt = -1;
     m->common.pending_exception = -1;
 
-    return (dromajo_cosim_state_t *)m;
+    return (majordomo_cosim_state_t *)m;
 }
 
-void dromajo_cosim_fini(dromajo_cosim_state_t *state) { virt_machine_end((RISCVMachine *)state); }
+void majordomo_cosim_fini(majordomo_cosim_state_t *state) { virt_machine_end((RISCVMachine *)state); }
 
 static bool is_store_conditional(uint32_t insn) {
     int opcode = insn & 0x7f, funct3 = insn >> 12 & 7;
@@ -165,7 +165,7 @@ static inline void handle_dut_overrides(RISCVCPUState *s, int priv, uint64_t pc,
  * MSB indicates an asynchronous interrupt, synchronous exception
  * otherwise.
  */
-void dromajo_cosim_raise_trap(dromajo_cosim_state_t *state, int hartid, int64_t cause) {
+void majordomo_cosim_raise_trap(majordomo_cosim_state_t *state, int hartid, int64_t cause) {
     VirtMachine *m = (VirtMachine *)state;
 
     if (cause < 0) {
@@ -193,7 +193,7 @@ void dromajo_cosim_raise_trap(dromajo_cosim_state_t *state, int hartid, int64_t 
  * time, and instret.  For all these cases the model will override
  * with the expected values.
  */
-int dromajo_cosim_step(dromajo_cosim_state_t *state, int hartid, uint64_t dut_pc, uint32_t dut_insn, uint64_t dut_wdata,
+int majordomo_cosim_step(majordomo_cosim_state_t *state, int hartid, uint64_t dut_pc, uint32_t dut_insn, uint64_t dut_wdata,
                        uint64_t dut_mstatus, bool check) {
     RISCVMachine *r = (RISCVMachine *)state;
     assert(r->ncpus > hartid);
@@ -458,7 +458,7 @@ int dromajo_cosim_step(dromajo_cosim_state_t *state, int hartid, uint64_t dut_pc
  *
  * DUT sets Dromajo memory. Used so that other devices (i.e. block device, accelerators, can write to memory).
  */
-int dromajo_cosim_override_mem(dromajo_cosim_state_t *state, int hartid, uint64_t dut_paddr, uint64_t dut_val, int size_log2) {
+int majordomo_cosim_override_mem(majordomo_cosim_state_t *state, int hartid, uint64_t dut_paddr, uint64_t dut_val, int size_log2) {
     RISCVMachine * r = (RISCVMachine *)state;
     RISCVCPUState *s = r->cpu_state[hartid];
     VirtMachine m = r->common;
@@ -514,8 +514,8 @@ int dromajo_cosim_override_mem(dromajo_cosim_state_t *state, int hartid, uint64_
  *
  * Sets logging/error functions.
  */
-void dromajo_install_new_loggers(dromajo_cosim_state_t *state, dromajo_logging_func_t *debug_log,
-                                 dromajo_logging_func_t *error_log) {
+void majordomo_install_new_loggers(majordomo_cosim_state_t *state, majordomo_logging_func_t *debug_log,
+                                 majordomo_logging_func_t *error_log) {
     VirtMachine *m = (VirtMachine *)state;
     m->debug_log = debug_log;
     m->error_log = error_log;

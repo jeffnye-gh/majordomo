@@ -48,7 +48,7 @@ extern FILE *majordomo_stdout;
 extern FILE *majordomo_stderr;
 extern void execution_trace(RISCVMachine *m,int hartid,uint32_t insn_raw);
 //extern void riscv_flush_tlb_write_range(void *opaque, uint8_t *ram_addr, size_t ram_size);
-extern void dromajo_default_debug_log(int hartid, const char *fmt, ...);
+extern void majordomo_default_debug_log(int hartid, const char *fmt, ...);
 extern bool load_elf_and_fake_the_config(VirtMachineParams *p, const char *path);
 extern CharacterDevice *console_init(bool allow_ctrlc, FILE *stdin, FILE *out);
 extern EthernetDevice *tun_open(const char *ifname);
@@ -75,8 +75,8 @@ extern int copy_kernel(RISCVMachine *s, uint8_t *fw_buf, size_t fw_buf_len, cons
 extern void dump_dram(RISCVMachine *s, FILE *f[16], const char *region, uint64_t start, uint64_t len);
 
 extern uint64_t rtc_get_time(RISCVMachine *m);
-extern void dromajo_default_error_log(int hartid, const char *fmt, ...);
-extern void dromajo_default_debug_log(int hartid, const char *fmt, ...);
+extern void majordomo_default_error_log(int hartid, const char *fmt, ...);
+extern void majordomo_default_debug_log(int hartid, const char *fmt, ...);
 
 //ZFA
 extern uint64_t fli_h64(uint64_t rs);

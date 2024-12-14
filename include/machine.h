@@ -50,7 +50,7 @@
 typedef struct RISCVMachine RISCVMachine;
 typedef struct FBDevice FBDevice;
 typedef void   SimpleFBDrawFunc(FBDevice *fb_dev, void *opaque, int x, int y, int w, int h);
-typedef void   dromajo_logging_func_t(int hartid, const char *fmt, ...);
+typedef void   majordomo_logging_func_t(int hartid, const char *fmt, ...);
 
 #ifndef MACHINE_H
 #define MACHINE_H
@@ -251,8 +251,8 @@ typedef struct VirtMachine {
     int  pending_exception;
 
     /* Central logging facility, so far only used in majordomo_cosim */
-    dromajo_logging_func_t *error_log;
-    dromajo_logging_func_t *debug_log;
+    majordomo_logging_func_t *error_log;
+    majordomo_logging_func_t *debug_log;
 
     IsaConfigFlags *isa_flags{nullptr};
 

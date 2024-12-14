@@ -202,11 +202,11 @@ int main(int argc, char **argv) {
 
 #ifdef REGRESS_COSIM
 
-    dromajo_cosim_state_t *costate = 0;
-    costate                        = dromajo_cosim_init(argc, argv);
+    majordomo_cosim_state_t *costate = 0;
+    costate                        = majordomo_cosim_init(argc, argv);
     if (!costate) return 1;
-    while (!dromajo_cosim_step(costate, 0, 0, 0, 0, 0, false)) ;
-    dromajo_cosim_fini(costate);
+    while (!majordomo_cosim_step(costate, 0, 0, 0, 0, 0, false)) ;
+    majordomo_cosim_fini(costate);
 
 #else
 

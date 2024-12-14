@@ -64,14 +64,14 @@ int main(int argc, char *argv[]) {
         usage(progname);
     }
 
-    dromajo_cosim_state_t *s = NULL;
+    majordomo_cosim_state_t *s = NULL;
     if (cosim) {
         /* Prep args for majordomo_cosim_init */
         argc -= 2;
         argv += 2;
         argv[0] = progname;
 
-        s = dromajo_cosim_init(argc, argv);
+        s = majordomo_cosim_init(argc, argv);
         if (!s)
             usage(progname);
     }
@@ -145,11 +145,11 @@ int main(int argc, char *argv[]) {
             continue;
 
         if (exception && (exception < 8 || exception > 11)) {  // do not skip ECALLS
-            dromajo_cosim_raise_trap(s, hartid, exception);
+            majordomo_cosim_raise_trap(s, hartid, exception);
             fprintf(majordomo_stdout, "exception %d with tval %08" PRIx64 "\n", exception, tval);
             continue;
         }
-        int r = dromajo_cosim_step(s, hartid, insn_addr, insn, wdata, 0, true);
+        int r = majordomo_cosim_step(s, hartid, insn_addr, insn, wdata, 0, true);
         if (r) {
             fprintf(majordomo_stdout, "Exited with %08x\n", r);
             goto fail;
@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
 
 done:
     if (cosim)
-        dromajo_cosim_fini(s);
+        majordomo_cosim_fini(s);
 
     if (exit_code == EXIT_SUCCESS)
         fprintf(majordomo_stdout, "\nSUCCESS, PASSED, GOOD!\n");

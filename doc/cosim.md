@@ -7,7 +7,7 @@ goal is to support single core and multicore.
 
 
 
-## Build dromajo to cosim against a trace file
+## Build majordomo to cosim against a trace file
 
 
 To understand the cosimulation API, a trace driven cosimulation is possible.
@@ -19,28 +19,28 @@ cmake -DCMAKE_BUILD_TYPE=Debug ../
 make -j
 ```
 
-To create a trace, run any risc-v executable or checkpoint with dromajo as usual
+To create a trace, run any risc-v executable or checkpoint with majordomo as usual
 but create a trace
 
 ```
-./dromajo --maxinsns 10k --trace 0 ../riscv-simple-tests/rv64ua-p-amoxor_d 2>check.trace
+./majordomo --maxinsns 10k --trace 0 ../riscv-simple-tests/rv64ua-p-amoxor_d 2>check.trace
 ```
 
 To read the trace and check that it is correct:
 
 ```
-./dromajo_cosim_test read check.trace
+./majordomo_cosim_test read check.trace
 ```
 
-To co-simulate the trace against another instance of dromajo, and disassemble the trace
+To co-simulate the trace against another instance of majordomo, and disassemble the trace
 
 ```
-./dromajo_cosim_test  cosim check.trace ../riscv-simple-tests/rv64ua-p-amoxor_d
+./majordomo_cosim_test  cosim check.trace ../riscv-simple-tests/rv64ua-p-amoxor_d
 ```
 
 If you have spike installed, you could:
 
 ```
-./dromajo_cosim_test  cosim check.trace ../riscv-simple-tests/rv64ua-p-amoxor_d | spike-dasm
+./majordomo_cosim_test  cosim check.trace ../riscv-simple-tests/rv64ua-p-amoxor_d | spike-dasm
 ```
 

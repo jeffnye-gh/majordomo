@@ -352,7 +352,7 @@ JSONValue json_parse_value2(const char **pp) {
             } else {
                 goto invalid_prop;
             }
-            //            fprintf(dromajo_stdout, "property: %s\n", json_get_str(tag));
+            //            fprintf(majordomo_stdout, "property: %s\n", json_get_str(tag));
             if (tag.u.str->len == 0) {
             invalid_prop:
                 return json_error_new("Invalid property name");

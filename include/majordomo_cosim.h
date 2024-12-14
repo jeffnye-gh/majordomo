@@ -26,7 +26,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-typedef struct dromajo_cosim_state_st dromajo_cosim_state_t;
+typedef struct majordomo_cosim_state_st majordomo_cosim_state_t;
 
 /*
  * majordomo_cosim_init --
@@ -34,14 +34,14 @@ typedef struct dromajo_cosim_state_st dromajo_cosim_state_t;
  * Creates and initialize the state of the RISC-V ISA golden model
  * Returns NULL upon failure.
  */
-dromajo_cosim_state_t *dromajo_cosim_init(int argc, char *argv[]);
+majordomo_cosim_state_t *majordomo_cosim_init(int argc, char *argv[]);
 
 /*
  * majordomo_cosim_fini --
  *
  * Destroys the states and releases the resources.
  */
-void dromajo_cosim_fini(dromajo_cosim_state_t *state);
+void majordomo_cosim_fini(majordomo_cosim_state_t *state);
 
 /*
  * majordomo_cosim_step --
@@ -58,7 +58,7 @@ void dromajo_cosim_fini(dromajo_cosim_state_t *state);
  * time, and instret.  For all these cases the model will override
  * with the expected values.
  */
-int dromajo_cosim_step(dromajo_cosim_state_t *state, int hartid, uint64_t dut_pc, uint32_t dut_insn, uint64_t dut_wdata,
+int majordomo_cosim_step(majordomo_cosim_state_t *state, int hartid, uint64_t dut_pc, uint32_t dut_insn, uint64_t dut_wdata,
                        uint64_t mstatus, bool check);
 
 /*
@@ -68,22 +68,22 @@ int dromajo_cosim_step(dromajo_cosim_state_t *state, int hartid, uint64_t dut_pc
  * MSB indicates an asynchronous interrupt, synchronous exception
  * otherwise.
  */
-void dromajo_cosim_raise_trap(dromajo_cosim_state_t *state, int hartid, int64_t cause);
+void majordomo_cosim_raise_trap(majordomo_cosim_state_t *state, int hartid, int64_t cause);
 
 /*
  * majordomo_cosim_override_mem --
  *
  * DUT sets Dromajo memory. Used so that other devices (i.e. block device, accelerators, can write to memory).
  */
-int dromajo_cosim_override_mem(dromajo_cosim_state_t *state, int hartid, uint64_t dut_paddr, uint64_t dut_val, int size_log2);
+int majordomo_cosim_override_mem(majordomo_cosim_state_t *state, int hartid, uint64_t dut_paddr, uint64_t dut_val, int size_log2);
 
 /*
  * majordomo_install_new_loggers --
  *
  * Sets logging/error functions.
  */
-void dromajo_install_new_loggers(dromajo_cosim_state_t *state, dromajo_logging_func_t *debug_log,
-                                 dromajo_logging_func_t *error_log);
+void majordomo_install_new_loggers(majordomo_cosim_state_t *state, majordomo_logging_func_t *debug_log,
+                                 majordomo_logging_func_t *error_log);
 
 #ifdef __cplusplus
 }  // extern C

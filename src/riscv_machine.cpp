@@ -733,7 +733,7 @@ void virt_machine_set_defaults(VirtMachineParams *p) {
 }
 
 RISCVMachine *global_virt_machine = 0;
-uint8_t       dromajo_get_byte_direct(uint64_t paddr) {
+uint8_t       majordomo_get_byte_direct(uint64_t paddr) {
     assert(global_virt_machine);  // needed to have a global map
     uint8_t *ptr = get_ram_ptr(global_virt_machine, paddr);
     if (ptr == NULL)
@@ -760,8 +760,8 @@ RISCVMachine *virt_machine_init(const VirtMachineParams *p) {
     s->common.snapshot_load_name      = p->snapshot_load_name;
 
     /* loggers are changed using install_new_loggers() in majordomo_cosim */
-    s->common.debug_log = &dromajo_default_debug_log;
-    s->common.error_log = &dromajo_default_error_log;
+    s->common.debug_log = &majordomo_default_debug_log;
+    s->common.error_log = &majordomo_default_error_log;
 
     s->ncpus = p->ncpus;
 

@@ -43,7 +43,7 @@
 
 uint64_t rtc_get_time(RISCVMachine *m) { return m->cpu_state[0]->mcycle / RTC_FREQ_DIV; }
 
-void dromajo_default_error_log(int hartid, const char *fmt, ...) {
+void majordomo_default_error_log(int hartid, const char *fmt, ...) {
     va_list args;
 
     va_start(args, fmt);
@@ -51,7 +51,7 @@ void dromajo_default_error_log(int hartid, const char *fmt, ...) {
     va_end(args);
 }
 
-void dromajo_default_debug_log(int hartid, const char *fmt, ...) {
+void majordomo_default_debug_log(int hartid, const char *fmt, ...) {
     va_list args;
 
     va_start(args, fmt);
