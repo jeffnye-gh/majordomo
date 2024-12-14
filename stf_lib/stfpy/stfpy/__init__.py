@@ -1,2 +1,0 @@
-from stfpy.stf_branch_reader import STFBranchReader
-from stfpy.stf_inst_reader import STFInstReader

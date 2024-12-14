@@ -1,5 +1,0 @@
-#include "stf_git_version.hpp"
-
-namespace stf {
-    const char STF_GIT_VERSION[] = "@STF_GIT_SHA1@";
-} // end namespace stf
