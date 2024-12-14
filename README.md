@@ -79,22 +79,31 @@ per line, lines beginning with x are commented out.
 As extension support is added tests from the riscv-isa-tests suite are enabled.
 
 
-## Cloning, build and run regression
+## Clone, build and run regression
 
 NOTE: At present the regression is very limited.
 
 NOTE: the `md_regress` target name
 
 ```
-git clone --recurse-submodules git@github.com:jeffnye-gh/cpm.dromajo.git
-cd cpm.dromajo
+git clone --recurse-submodules https://github.com/jeffnye-gh/majordomo.git
+```
+
+## Build and test
+Set the RISCV env var per your installation. Example shown.
+
+```
+cd majordomo
+export MAJORDOMO_TOP="$PWD"
+export RISCV=/usr/local/riscv-embecosm-embedded-ubuntu2204-20240407
 mkdir build
 cd build
 cmake ..
 make -j$(nproc) md_regress
 ```
 
-Results will look similar to this, execution times are dependent on 
+### Regression output
+Regression results will look similar to this, execution times are dependent on 
 host compiler optimizations.
 
 ```
