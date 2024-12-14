@@ -18,8 +18,8 @@
 
 #include "LiveCacheCore.h"
 #include "cutils.h"
-#include "dromajo.h"
-#include "dromajo_protos.h"
+#include "majordomo.h"
+#include "majordomo_protos.h"
 #include "iomem.h"
 #include "options.h"
 #include "riscv_machine.h"
@@ -28,10 +28,10 @@
 
 //#define REGRESS_COSIM 1
 #ifdef REGRESS_COSIM
-#include "dromajo_cosim.h"
+#include "majordomo_cosim.h"
 #endif
 
-#include "dromajo_stf.h"
+#include "majordomo_stf.h"
 
 #include <assert.h>
 #include <signal.h>

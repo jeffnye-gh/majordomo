@@ -59,7 +59,7 @@ set(VERSION_PATCH 0)
 find_package(Boost REQUIRED COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIRS})
 # -------------------------------------------------------------------------
-# Capture GIT SHA in include/dromajo_sha.h
+# Capture GIT SHA in include/majordomo_sha.h
 # -------------------------------------------------------------------------
 # Verify Git - should never fail
 find_package(Git REQUIRED)
@@ -74,8 +74,8 @@ execute_process(
 
 # SHA header config file
 configure_file(
-    "${CMAKE_SOURCE_DIR}/include/dromajo_sha.h.in"
-    "${CMAKE_BINARY_DIR}/dromajo_sha.h"
+    "${CMAKE_SOURCE_DIR}/include/majordomo_sha.h.in"
+    "${CMAKE_BINARY_DIR}/majordomo_sha.h"
 )
 
 # Include the current build directory 
@@ -155,15 +155,15 @@ if (GOLDMEM)
     include_directories(gold)
 endif ()
 
-# libdromajo_cosim
+# libmajordomo_cosim
 add_library(dromajo_cosim STATIC
         src/bin_utils.cpp
         src/block_device.cpp
         src/cutils.cpp
-        src/dromajo_cosim.cpp
-        src/dromajo_main.cpp
-        src/dromajo_stf.cpp
-        src/dromajo_trace.cpp
+        src/majordomo_cosim.cpp
+        src/majordomo_main.cpp
+        src/majordomo_stf.cpp
+        src/majordomo_trace.cpp
         src/dw_apb_uart.cpp
         src/elf64.cpp
         src/fdt.cpp
@@ -188,8 +188,8 @@ add_library(dromajo_cosim STATIC
         src/zfa.cpp
         )
 
-add_executable(dromajo src/dromajo.cpp)
-add_executable(dromajo_cosim_test src/dromajo_cosim_test.cpp)
+add_executable(dromajo src/majordomo.cpp)
+add_executable(dromajo_cosim_test src/majordomo_cosim_test.cpp)
 
 target_link_libraries(dromajo Boost::program_options)
 target_link_libraries(dromajo_cosim_test Boost::program_options)

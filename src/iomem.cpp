@@ -47,7 +47,7 @@
 #include <string.h>
 
 #include "cutils.h"
-#include "dromajo.h"
+#include "majordomo.h"
 
 static PhysMemoryRange *default_register_ram(PhysMemoryMap *s, uint64_t addr, uint64_t size, int devram_flags);
 static void             default_free_ram(PhysMemoryMap *s, PhysMemoryRange *pr);

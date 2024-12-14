@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "dromajo_cosim.h"
+#include "majordomo_cosim.h"
 
 #include <assert.h>
 #include <inttypes.h>
@@ -23,7 +23,7 @@
 #include <stdio.h>
 
 #include "cutils.h"
-#include "dromajo.h"
+#include "majordomo.h"
 #include "iomem.h"
 #include "riscv_machine.h"
 
@@ -37,7 +37,7 @@ void check_inorder_init(int ncores);
 int simpoint_roi = 0;
 
 /*
- * dromajo_cosim_init --
+ * majordomo_cosim_init --
  *
  * Creates and initialize the state of the RISC-V ISA golden model
  * Returns NULL upon failure.
@@ -159,7 +159,7 @@ static inline void handle_dut_overrides(RISCVCPUState *s, int priv, uint64_t pc,
 }
 
 /*
- * dromajo_cosim_raise_trap --
+ * majordomo_cosim_raise_trap --
  *
  * DUT raises a trap (exception or interrupt) and provides the cause.
  * MSB indicates an asynchronous interrupt, synchronous exception
@@ -179,7 +179,7 @@ void dromajo_cosim_raise_trap(dromajo_cosim_state_t *state, int hartid, int64_t 
 }
 
 /*
- * dromajo_cosim_step --
+ * majordomo_cosim_step --
  *
  * executes exactly one instruction in the golden model and returns
  * zero if the supplied expected values match and execution should
@@ -454,7 +454,7 @@ int dromajo_cosim_step(dromajo_cosim_state_t *state, int hartid, uint64_t dut_pc
 }
 
 /*
- * dromajo_cosim_override_mem --
+ * majordomo_cosim_override_mem --
  *
  * DUT sets Dromajo memory. Used so that other devices (i.e. block device, accelerators, can write to memory).
  */
@@ -510,7 +510,7 @@ int dromajo_cosim_override_mem(dromajo_cosim_state_t *state, int hartid, uint64_
 }
 
 /*
- * dromajo_install_new_loggers --
+ * majordomo_install_new_loggers --
  *
  * Sets logging/error functions.
  */

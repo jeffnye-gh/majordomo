@@ -48,7 +48,7 @@ using namespace std;
 //#endif
 
 // List of supported extensions
-// See also dromajo_isa.h
+// See also majordomo_isa.h
 std::unordered_map<char,bool IsaConfigFlags::*> simpleExts = {
     {'i', &IsaConfigFlags::i},
     {'e', &IsaConfigFlags::e},

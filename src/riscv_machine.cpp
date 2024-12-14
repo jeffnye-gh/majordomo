@@ -40,7 +40,7 @@
  */
 
 #include "block_device.h"
-#include "dromajo_protos.h"
+#include "majordomo_protos.h"
 #include "dw_apb_uart.h"
 #include "elf64.h"
 #include "options.h"
@@ -759,7 +759,7 @@ RISCVMachine *virt_machine_init(const VirtMachineParams *p) {
     s->common.maxinsns                = p->maxinsns;
     s->common.snapshot_load_name      = p->snapshot_load_name;
 
-    /* loggers are changed using install_new_loggers() in dromajo_cosim */
+    /* loggers are changed using install_new_loggers() in majordomo_cosim */
     s->common.debug_log = &dromajo_default_debug_log;
     s->common.error_log = &dromajo_default_error_log;
 
@@ -957,7 +957,7 @@ RISCVMachine *virt_machine_load(const VirtMachineParams *p, RISCVMachine *s) {
     if (p->dump_memories) {
         FILE *f = fopen("BootRAM.hex", "w+");
         if (!f) {
-            vm_error("dromajo: %s: %s\n", "BootRAM.hex", strerror(errno));
+            vm_error("majordomo: %s: %s\n", "BootRAM.hex", strerror(errno));
             return NULL;
         }
 
@@ -977,7 +977,7 @@ RISCVMachine *virt_machine_load(const VirtMachineParams *p, RISCVMachine *s) {
                 snprintf(hexname, sizeof hexname, "memImage_d%crow%d_%s.hex", "we"[i / 4 % 2], i % 4, i / 8 == 0 ? "even" : "odd");
                 f[i] = fopen(hexname, "w");
                 if (!f[i]) {
-                    vm_error("dromajo: %s: %s\n", hexname, strerror(errno));
+                    vm_error("majordomo: %s: %s\n", hexname, strerror(errno));
                     return NULL;
                 }
             }

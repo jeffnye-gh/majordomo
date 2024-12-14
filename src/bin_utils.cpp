@@ -37,7 +37,7 @@
  * THE SOFTWARE.
  */
 
-#include "dromajo_protos.h"
+#include "majordomo_protos.h"
 #include "elf64.h"
 #include "riscv_machine.h"
 
@@ -62,7 +62,7 @@ void load_elf_image(RISCVMachine *s, const uint8_t *image, size_t image_len) {
             rounded_size        = (rounded_size + DEVRAM_PAGE_SIZE - 1) & ~(DEVRAM_PAGE_SIZE - 1);
             if (ph->p_vaddr == BOOT_BASE_ADDR) {
                 if (s->bootrom_loaded) {
-                    vm_error("dromajo: WARNING multiple bootrams; last wins");
+                    vm_error("majordomo: WARNING multiple bootrams; last wins");
                 }
                 s->bootrom_loaded = true;
             } else if (ph->p_vaddr != s->ram_base_addr)
@@ -91,7 +91,7 @@ void load_hex_image(RISCVMachine *s, uint8_t *image, size_t image_len) {
             break;
         uint32_t *mem = (uint32_t *)get_ram_ptr(s, offset);
         if (!mem)
-          errx(1, "dromajo: can't load hex file, no memory at 0x%lx", offset);
+          errx(1, "majordomo: can't load hex file, no memory at 0x%lx", offset);
 
         *mem = data;
 
@@ -107,7 +107,7 @@ int load_bootrom(RISCVMachine *s, const char *bootrom_name) {
     FILE *    f        = fopen(bootrom_name, "rb");
 
     if (!f) {
-        vm_error("dromajo: %s: %s\n", bootrom_name, strerror(errno));
+        vm_error("majordomo: %s: %s\n", bootrom_name, strerror(errno));
         return -1;
     }
 
@@ -192,7 +192,7 @@ int copy_kernel(RISCVMachine *s, uint8_t *fw_buf, size_t fw_buf_len, const uint8
         uint64_t fw_entrypoint = elf64_get_entrypoint(fw_buf);
         if (!s->bootrom_loaded && fw_entrypoint != s->ram_base_addr) {
             fprintf(dromajo_stderr,
-                    "DROMAJO currently requires a 0x%" PRIx64 " starting address, image assumes 0x%0" PRIx64 "\n",
+                    "majordomo currently requires a 0x%" PRIx64 " starting address, image assumes 0x%0" PRIx64 "\n",
                     s->ram_base_addr,
                     fw_entrypoint);
             return 1;

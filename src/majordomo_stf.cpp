@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "dromajo.h"
-#include "dromajo_sha.h"
+#include "majordomo.h"
+#include "majordomo_sha.h"
 
 #ifdef REGRESS_COSIM
-#include "dromajo_cosim.h"
+#include "majordomo_cosim.h"
 #endif
 
-#include "dromajo_stf.h"
+#include "majordomo_stf.h"
 stf::STFWriter stf_writer;
 
 #define STF_TRACE_DEBUG(s)	\
@@ -72,11 +72,11 @@ bool stf_trace_trigger(RISCVCPUState *s,target_ulong PC,uint32_t insn)
     bool stop = s->machine->common.stf_macro_tracing_active && s->machine->common.stf_is_stop_opc;
 
     if (start) {
-        fprintf(dromajo_stderr, "@@@ DROMAJO: START OPC \n");
+        fprintf(dromajo_stderr, "@@@ MAJORDOMO: START OPC \n");
         s->machine->common.stf_macro_tracing_active = true;
         stf_trace_open(s, PC);
     } else if (stop) {
-        fprintf(dromajo_stderr, "@@@ DROMAJO: STOP OPC \n");
+        fprintf(dromajo_stderr, "@@@ MAJORDOMO: STOP OPC \n");
         s->machine->common.stf_macro_tracing_active = false;
         stf_trace_close(s, PC);
         if (s->machine->common.stf_exit_on_stop_opc) {
@@ -93,7 +93,7 @@ void stf_trace_open(RISCVCPUState *s, target_ulong PC)
 {
     int hartid = s->mhartid;
 
-    fprintf(dromajo_stderr, ">>> DROMAJO: Tracing Started at 0x%lx\n", PC);
+    fprintf(dromajo_stderr, ">>> MAJORDOMO: Tracing Started at 0x%lx\n", PC);
 
     s->machine->common.stf_trace_open = true;
     s->machine->common.stf_prog_asid = (s->satp >> 4) & 0xFFFF;
@@ -104,13 +104,13 @@ void stf_trace_open(RISCVCPUState *s, target_ulong PC)
         std::string drom_sha,stflib_sha;
         uint32_t vMajor,vMinor,vPatch;
         if(s->machine->common.stf_force_zero_sha) {
-          drom_sha   = "DROMAJO SHA:0";
-          stflib_sha = "STF_LIB SHA:0";
+          drom_sha   = "MAJORDOMO SHA:0";
+          stflib_sha = "STF_LIB   SHA:0";
           vMajor = 0;
           vMinor = 0;
           vPatch = 0;
         } else {
-          drom_sha   = std::string("DROMAJO SHA:")+std::string(DROMAJO_GIT_SHA);
+          drom_sha   = std::string("MAJORDOMO SHA:")+std::string(DROMAJO_GIT_SHA);
           stflib_sha = std::string("STF_LIB SHA:")+std::string(STF_LIB_GIT_SHA);
           vMajor = VERSION_MAJOR;
           vMinor = VERSION_MINOR;
@@ -142,9 +142,9 @@ void stf_trace_close(RISCVCPUState *s, target_ulong PC)
         s->machine->common.stf_macro_tracing_active = false;
         s->machine->common.stf_insn_tracing_active = false;
 
-        fprintf(dromajo_stderr, "\n\t>>> DROMAJO: Tracing Stopped at 0x%lx @INST_num %ld\n",
+        fprintf(dromajo_stderr, "\n\t>>> MAJORDOMO: Tracing Stopped at 0x%lx @INST_num %ld\n",
                                 PC, s->machine->common.num_executed);
-        fprintf(dromajo_stderr, "\n\t>>> DROMAJO: Traced %ld insts in %ld executed instructions\n",
+        fprintf(dromajo_stderr, "\n\t>>> MAJORDOMO: Traced %ld insts in %ld executed instructions\n",
                                 s->machine->common.stf_num_traced, s->machine->common.num_executed);
         stf_writer.close();
     }
@@ -298,11 +298,11 @@ bool stf_trace_trigger_insn(RISCVCPUState *s, target_ulong PC)
                 s->machine->common.stf_num_traced == s->machine->common.stf_insn_length;
 
     if (start) {
-        fprintf(dromajo_stderr, "@@@ DROMAJO: START INSTRUCTION NUMBER \n");
+        fprintf(dromajo_stderr, "@@@ MAJORDOMO: START INSTRUCTION NUMBER \n");
         s->machine->common.stf_insn_tracing_active = true;
         stf_trace_open(s, PC);
     } else if (stop) {
-         fprintf(dromajo_stderr, "@@@ DROMAJO: STOP INSTRUCTION NUMBER \n");
+         fprintf(dromajo_stderr, "@@@ MAJORDOMO: STOP INSTRUCTION NUMBER \n");
         s->machine->common.stf_insn_tracing_active = false;
         stf_trace_close(s, PC);
         if (s->machine->common.stf_exit_on_stop_opc) {

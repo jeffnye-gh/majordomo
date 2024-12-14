@@ -50,7 +50,7 @@
 #include <unistd.h>
 
 #include "cutils.h"
-#include "dromajo.h"
+#include "majordomo.h"
 #include "fs_utils.h"
 #include "iomem.h"
 #include "virtio.h"

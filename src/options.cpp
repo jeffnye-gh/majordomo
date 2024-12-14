@@ -35,7 +35,7 @@
  * THE SOFTWARE.
  */
 
-#include "dromajo_sha.h"
+#include "majordomo_sha.h"
 #include "options.h"
 #include "riscv_machine.h"
 
@@ -63,9 +63,9 @@ void usage_interactive()
 void usage(const char *prog, const char *msg) {
   fprintf(dromajo_stderr,
 "\nmessage: %s\n\n"
-"    Dromajo version:  %s\n"
-"    Dromajo SHA:      %s\n"
-"    STF_LIB SHA:      %s\n"
+"    Majordomo version:  %s\n"
+"    Majordomo SHA:      %s\n"
+"    STF_LIB   SHA:      %s\n"
 "\n"
 "    Copyright (c) 2016-2017 Fabrice Bellard\n"
 "    Copyright (c) 2018,2019 Esperanto Technologies\n"
@@ -108,7 +108,7 @@ void usage(const char *prog, const char *msg) {
 "    --stf_priv_modes <USHM|USH|US|U> Specify which privilege \n"
 "                  modes to include for STF trace generation\n"
 "    --stf_force_zero_sha Emit 0 for all SHA's in the STF header. This is a \n"
-"                  debug option. Also clears the dromajo version placed in\n"
+"                  debug option. Also clears the majordomo version placed in\n"
 "                  the STF header.\n"
 "    --stf_insn_num_tracing Enable stf tracing based on instruction number\n"
 "    --stf_insn_start Starts stf tracing after this number of instructions\n"
@@ -151,8 +151,8 @@ void usage(const char *prog, const char *msg) {
 "    --memory_addr sets the memory start address \n"
 "                   (default 0x%lx)\n"
 "    --bootrom load in a bootrom img file \n"
-"                   (default is dromajo bootrom)\n"
-"    --dtb load in a dtb file (default is dromajo dtb)\n"
+"                   (default is majordomo bootrom)\n"
+"    --dtb load in a dtb file (default is majordomo dtb)\n"
 "    --compact_bootrom have dtb be directly after bootrom \n"
 "                   (default 256B after boot base)\n"
 "    --reset_vector set reset vector for all cores \n"
@@ -194,8 +194,8 @@ void Options::setup_options(int ac,char **av)
 
   po::options_description visibleOpts(
 //   string(model_desc +"\n" +
-   string("\nUsage:: cpm.dromajo [--help|-h|--version|-v] {[options] "
-                                                 "{positional_option}}")
+   string("\nUsage:: majordomo [--help|-h|--version|-v] {[options] "
+                                            "{positional_option}}")
   );
 
   po::options_description allOpts("All options");
@@ -457,7 +457,7 @@ void Options::build_options(po::options_description &stdOpts,
     ("stf_force_zero_sha",
        po::bool_switch(&stf_force_zero_sha)->default_value(false),
        "Emit 0 for all SHA's in the STF header. This is a debug option. "
-       "Also clears the dromajo version placed in the STF header used in "
+       "Also clears the majordomo version placed in the STF header used in "
        "regression results comparisons")
 
     ("stf_insn_num_tracing",
@@ -564,7 +564,7 @@ void Options::build_options(po::options_description &stdOpts,
 
     ("dtb",
        po::value<string>(&dtb_name),
-       "Load a dtb file (default is dromajo dtb)")
+       "Load a dtb file (default is majordomo dtb)")
 
     ("plic", po::value<BaseAndSize>(&plic_range)
                   ->default_value(plic_range)
@@ -582,7 +582,7 @@ void Options::build_options(po::options_description &stdOpts,
 
     ("live_cache_size",po::value<uint64_t>(&live_cache_size),
      "Live cache warmup for checkpoint (default 8M). "
-     "Dromajo must be compiled with -DLIVECACHE for this option to "
+     "Majordomo must be compiled with -DLIVECACHE for this option to "
      "be valid")
   ;
 
@@ -618,7 +618,7 @@ bool Options::check_options(po::variables_map &vm,
   bool ok = true;
   if(vm.count("live_cache_size")) {
     #ifndef LIVECACHE
-    cout<<"-E: Dromajo must be compiled with -DLIVECACHE for "
+    cout<<"-E: Majordomo must be compiled with -DLIVECACHE for "
         <<"--live_cache_size to have an effect"<<endl;
     ok = false;
     #endif
@@ -642,9 +642,9 @@ void Options::emit_credits_info()
 // --------------------------------------------------------------------
 void Options::emit_version_info()
 {
-  cout<<"  Dromajo version: "<<DROMAJO_VERSION_STRING<<endl;
-  cout<<"  Dromajo SHA:     "<<DROMAJO_GIT_SHA<<endl;
-  cout<<"  STF_LIB SHA:     "<<STF_LIB_GIT_SHA<<endl;
+  cout<<"  Majordomo version: "<<DROMAJO_VERSION_STRING<<endl;
+  cout<<"  Majordomo SHA:     "<<DROMAJO_GIT_SHA<<endl;
+  cout<<"  STF_LIB   SHA:     "<<STF_LIB_GIT_SHA<<endl;
 }
 // --------------------------------------------------------------------
 // --------------------------------------------------------------------

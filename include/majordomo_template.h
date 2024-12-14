@@ -54,8 +54,8 @@
 #error unsupported XLEN
 #endif
 
-#include "dromajo_stf.h"
-#include "dromajo_protos.h"
+#include "majordomo_stf.h"
+#include "majordomo_protos.h"
 #include <limits>
 
 //#define EN_ZBA (s->machine->common.ext_flags.zba == true)
@@ -2847,14 +2847,14 @@ int no_inline glue(riscv_cpu_interp, XLEN)(RISCVCPUState *s, int n_cycles) {
                     rm  = (insn >> 12) & 7;
                     switch (_funct7) { //FIXME: FLEN/etc should be option vars
                         #define F_SIZE 32
-                        #include "dromajo_fp_template.h"
+                        #include "majordomo_fp_template.h"
                         #if FLEN >= 64
                         #define F_SIZE 64
-                        #include "dromajo_fp_template.h"
+                        #include "majordomo_fp_template.h"
                         #endif
                         #if FLEN >= 128
                         #define F_SIZE 128
-                        #include "dromajo_fp_template.h"
+                        #include "majordomo_fp_template.h"
                         #endif
                         default: ILLEGAL_INSTR("093")
                     }

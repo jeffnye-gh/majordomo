@@ -42,7 +42,7 @@
 
 
 #include "json.h"
-#include "dromajo_stf.h"
+#include "majordomo_stf.h"
 #include "riscv_isa.h"
 
 #include <cstdint>
@@ -250,7 +250,7 @@ typedef struct VirtMachine {
     int  pending_interrupt;
     int  pending_exception;
 
-    /* Central logging facility, so far only used in dromajo_cosim */
+    /* Central logging facility, so far only used in majordomo_cosim */
     dromajo_logging_func_t *error_log;
     dromajo_logging_func_t *debug_log;
 

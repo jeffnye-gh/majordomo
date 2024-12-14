@@ -1,5 +1,5 @@
 /*
- * Test bench for dromajo_cosim A
+ * Test bench for majordomo_cosim A
  *
  * Copyright (C) 2018,2019, Esperanto Technologies Inc.
  *
@@ -17,8 +17,8 @@
  *
  * Parse the trace output and check that we cosim correctly.
  */
-#include "dromajo_cosim.h"
-#include "dromajo.h"
+#include "majordomo_cosim.h"
+#include "majordomo.h"
 #include "options.h"
 
 #include <stdlib.h>
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
 
     dromajo_cosim_state_t *s = NULL;
     if (cosim) {
-        /* Prep args for dromajo_cosim_init */
+        /* Prep args for majordomo_cosim_init */
         argc -= 2;
         argv += 2;
         argv[0] = progname;

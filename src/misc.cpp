@@ -37,7 +37,7 @@
  * THE SOFTWARE.
  */
 
-#include "dromajo_protos.h"
+#include "majordomo_protos.h"
 #include "riscv_machine.h"
 #include <cstdarg>
 

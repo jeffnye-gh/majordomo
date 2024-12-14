@@ -38,7 +38,7 @@
  */
 
 #include "riscv_machine.h"
-#include "dromajo_protos.h"
+#include "majordomo_protos.h"
 
 void execution_trace(RISCVMachine *m,int hartid,uint32_t insn_raw) {
   RISCVCPUState *cpu = m->cpu_state[hartid];

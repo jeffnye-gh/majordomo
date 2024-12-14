@@ -40,7 +40,7 @@
 
 #include "LiveCacheCore.h"
 #include "cutils.h"
-#include "dromajo.h"
+#include "majordomo.h"
 #include "options.h"
 #include "iomem.h"
 #include "riscv_machine.h"
@@ -968,7 +968,7 @@ static inline bool v0_mask(RISCVCPUState *s) {
 V_REG_ACCESS_CONFIG(v_reg_read, V_REG_READ)
 V_MEM_OP_CONFIG(v_load, V_LOAD)
 V_MEM_OP_CONFIG(v_store, V_STORE)
-// XXX - most of this function belongs in the dromajo template
+// XXX - most of this function belongs in the majordomo template
 /* Vector memory operation, makes distinction between load/store
  * returns 0 if no exceptions
  * returns 1 if illegal insn
@@ -2236,10 +2236,10 @@ static sfloat64 f_unbox32(sfloat64 r) {
 static sfloat64 f_unbox64(sfloat64 r) { return r; }
 
 //#define XLEN 32
-//#include "dromajo_template.h"
+//#include "majordomo_template.h"
 
 #define XLEN 64
-#include "dromajo_template.h"
+#include "majordomo_template.h"
 
 int riscv_cpu_interp(RISCVCPUState *s, int n_cycles) { return riscv_cpu_interp64(s, n_cycles); }
 
@@ -2861,7 +2861,7 @@ void riscv_cpu_serialize(RISCVCPUState *s, const char *dump_name, const uint64_t
         fprintf(dromajo_stderr, "ERROR: could not checkpoint when running inside the ROM\n");
         exit(-4);
     } else if (s->pc == BOOT_BASE_ADDR && boot_ram) {
-        fprintf(dromajo_stderr, "NOTE: using the default dromajo ROM\n");
+        fprintf(dromajo_stderr, "NOTE: using the default majordomo ROM\n");
         serialize_memory(boot_ram->phys_mem, boot_ram->size, f_name);
     } else {
         fprintf(dromajo_stderr, "ERROR: unexpected PC address 0x%llx\n", (long long)s->pc);

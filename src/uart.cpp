@@ -39,8 +39,8 @@
 
 #include "block_device.h"
 #include "cutils.h"
-#include "dromajo.h"
-#include "dromajo_protos.h"
+#include "majordomo.h"
+#include "majordomo_protos.h"
 #include "dw_apb_uart.h"
 #include "elf64.h"
 #include "iomem.h"

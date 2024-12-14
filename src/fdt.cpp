@@ -38,7 +38,7 @@
  */
 
 //#include "block_device.h"
-#include "dromajo_protos.h"
+#include "majordomo_protos.h"
 #include "dw_apb_uart.h"
 //#include "elf64.h"
 //#include "options.h"
@@ -480,7 +480,7 @@ int riscv_build_fdt(RISCVMachine *m, uint8_t *dst, const char *dtb_name, const c
         rewind(f);
 
         if (fread((char *)dst, 1, size, f) != (size_t)size) {
-            vm_error("dromajo: %s: %s\n", dtb_name, strerror(errno));
+            vm_error("majordomo: %s: %s\n", dtb_name, strerror(errno));
             return -1;
         }
 
@@ -491,7 +491,7 @@ int riscv_build_fdt(RISCVMachine *m, uint8_t *dst, const char *dtb_name, const c
     {
         FILE *f = fopen("dromajo.dtb", "wb");
         if (!f) {
-            vm_error("dromajo: %s: %s\n", "dromajo.dtb", strerror(errno));
+            vm_error("majordomo: %s: %s\n", "dromajo.dtb", strerror(errno));
             return -1;
         }
         fwrite(dst, 1, size, f);

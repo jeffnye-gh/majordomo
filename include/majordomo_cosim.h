@@ -29,7 +29,7 @@ extern "C" {
 typedef struct dromajo_cosim_state_st dromajo_cosim_state_t;
 
 /*
- * dromajo_cosim_init --
+ * majordomo_cosim_init --
  *
  * Creates and initialize the state of the RISC-V ISA golden model
  * Returns NULL upon failure.
@@ -37,14 +37,14 @@ typedef struct dromajo_cosim_state_st dromajo_cosim_state_t;
 dromajo_cosim_state_t *dromajo_cosim_init(int argc, char *argv[]);
 
 /*
- * dromajo_cosim_fini --
+ * majordomo_cosim_fini --
  *
  * Destroys the states and releases the resources.
  */
 void dromajo_cosim_fini(dromajo_cosim_state_t *state);
 
 /*
- * dromajo_cosim_step --
+ * majordomo_cosim_step --
  *
  * executes exactly one instruction in the golden model and returns
  * zero if the supplied expected values match and execution should
@@ -62,7 +62,7 @@ int dromajo_cosim_step(dromajo_cosim_state_t *state, int hartid, uint64_t dut_pc
                        uint64_t mstatus, bool check);
 
 /*
- * dromajo_cosim_raise_trap --
+ * majordomo_cosim_raise_trap --
  *
  * DUT raises a trap (exception or interrupt) and provides the cause.
  * MSB indicates an asynchronous interrupt, synchronous exception
@@ -71,14 +71,14 @@ int dromajo_cosim_step(dromajo_cosim_state_t *state, int hartid, uint64_t dut_pc
 void dromajo_cosim_raise_trap(dromajo_cosim_state_t *state, int hartid, int64_t cause);
 
 /*
- * dromajo_cosim_override_mem --
+ * majordomo_cosim_override_mem --
  *
  * DUT sets Dromajo memory. Used so that other devices (i.e. block device, accelerators, can write to memory).
  */
 int dromajo_cosim_override_mem(dromajo_cosim_state_t *state, int hartid, uint64_t dut_paddr, uint64_t dut_val, int size_log2);
 
 /*
- * dromajo_install_new_loggers --
+ * majordomo_install_new_loggers --
  *
  * Sets logging/error functions.
  */
