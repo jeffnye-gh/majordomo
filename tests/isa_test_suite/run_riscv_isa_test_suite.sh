@@ -1,6 +1,6 @@
 #!/bin/bash
 export OPT='--ctrlc --stf_priv_modes USHM --stf_force_zero_sha'
-export SIM_BIN=../../bin/cpm_dromajo
+export SIM_BIN=../../bin/majordomo
 export RISCV_TEST_DIR=./riscv-test-files/share/riscv-tests/isa
 ALLOWED_TESTS_FILE="isa_tests_list.txt"
 

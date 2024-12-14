@@ -8,7 +8,7 @@ OBJD_OPTS=--disassemble-all --disassemble-zeroes --section=.text --section=.text
                --section=.text.init --section=.data -Mnumeric,no-aliases
 # --------------------------------------------------------------------
 
-DROM=../../bin/cpm_dromajo
+DROM=../../bin/majordomo
 COMMON_TEST_FILES=$(MAJORDOMO_TOP)/tests/common_test_files
 DROM_OPTS=--ctrlc --trace 0 --march=rv64g_zba_zbb_zbc_zbs_xandes_zfa
 

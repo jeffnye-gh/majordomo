@@ -11,6 +11,6 @@ $RISCV/bin/riscv64-unknown-elf-objdump \
   --section=.data -Mnumeric,no-aliases \
   ./bin/decoder/decoder.riscv > ./logs/decoder/decoder.riscv.dump
 
-$MAJORDOMO_TOP/bin/cpm_dromajo --ctrlc --trace 0 \
+$MAJORDOMO_TOP/bin/majordomo --ctrlc --trace 0 \
   --march=rv64g_zba_zbb_zbc_zbs_xandes_zfa \
   ./bin/decoder/decoder.riscv 

@@ -1,7 +1,7 @@
 #! /bin/bash
 
 export OPT='--stf_priv_modes USHM --stf_force_zero_sha'
-export DRO=../../bin/cpm_dromajo
+export DRO=../../bin/majordomo
 
 echo "clean previous traces"
 mkdir -p traces

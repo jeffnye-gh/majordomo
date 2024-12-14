@@ -124,7 +124,7 @@ int generate_bootrom(RISCVMachine *s) {
     int32_t   bootromSzBytes = 0;
 
     /*
-     * RISCVEMU upon which Dromajo is based used to generate the boot
+     * RISCVEMU upon which Majordomo is based used to generate the boot
      * rom and existing clients have dependencies on the exact
      * contents, so this is delicate.  Reliance on this is depricated
      * and future client are encouraged to pass in the boot ram as an
@@ -132,7 +132,7 @@ int generate_bootrom(RISCVMachine *s) {
      */
 
     if (s->ram_base_addr != 0x0080000000 && s->ram_base_addr != 0x8000000000 && s->ram_base_addr != 0xC000000000) {
-        vm_error("Dromajo doesn't support BOOTROM generation for base address 0x%0" PRIx64
+        vm_error("Majordomo doesn't support BOOTROM generation for base address 0x%0" PRIx64
                  " please provide a custom bootrom via the --bootrom option or the bootrom"
                  " config parameter\n",
                  s->ram_base_addr);

@@ -1,5 +1,7 @@
 # Tutorial: Integration of Dromajo into Ariane for co-simulation
 
+THIS INFORMATION IS OLD BUT KEPT FOR REFERENCE
+
 ## Introduction
 This tutorial will teach you in 8 steps (with some minor sub-steps 😃), how to integrate dromajo into the RTL implementation of a 64-bit RISCV core for co-simulation purposes. This tutorial will demonstrate the process on a specific example: [Ariane RISC-V CPU](https://github.com/pulp-platform/ariane). Visit the page, for more information on this particular core.
 

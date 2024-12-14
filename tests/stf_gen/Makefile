@@ -1,7 +1,7 @@
 .PHONY: default clean run unpack pack check
 SHELL=/bin/bash
 
-DRO=../../build/dromajo
+DRO=../../build/majordomo
 
 OPT=
 

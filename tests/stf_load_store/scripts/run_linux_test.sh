@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export OPT='--ctrlc --stf_force_zero_sha --stf_exit_on_stop_opc --stf_priv_modes USHM'
-export DRO=../../bin/cpm_dromajo
+export DRO=../../bin/majordomo
 export STF_RECORD_DUMP=/data/tools/bin/stf_record_dump
 export SCRIPTS_DIR=scripts
 export COLLATERAL_SCRIPT=scripts/create_linux_collateral.sh

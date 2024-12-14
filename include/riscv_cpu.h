@@ -170,7 +170,7 @@ typedef uint128_t mem_uint_t;
    possible events, i.e. 64-8, where each bit represents the mask for
    a particular event in an event-set.
 
-   Dromajo currently has 7 event-sets and not all 56-events are
+   majordomo currently has 7 event-sets and not all 56-events are
    implemented for each set.
 */
 #define HPM_EVENT_SETMASK   0x00000007
@@ -335,7 +335,7 @@ typedef struct RISCVCPUState {
 
     bool ignore_sbi_shutdown;
 
-    /* Extension state, not used by Dromajo itself */
+    /* Extension state, not used by majordomo itself */
     void *ext_cpu_state;
 
     /* STF Trace Generation State Capture */

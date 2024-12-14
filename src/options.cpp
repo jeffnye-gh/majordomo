@@ -168,8 +168,8 @@ void usage(const char *prog, const char *msg) {
 "    --clear_ids clear mvendorid, marchid, mimpid for all cores\n\n"
         ,
         msg,
-        DROMAJO_VERSION_STRING,
-        DROMAJO_GIT_SHA,
+        MAJORDOMO_VERSION_STRING,
+        MAJORDOMO_GIT_SHA,
         STF_LIB_GIT_SHA,
         prog,
         (long)BOOT_BASE_ADDR,
@@ -642,8 +642,8 @@ void Options::emit_credits_info()
 // --------------------------------------------------------------------
 void Options::emit_version_info()
 {
-  cout<<"  Majordomo version: "<<DROMAJO_VERSION_STRING<<endl;
-  cout<<"  Majordomo SHA:     "<<DROMAJO_GIT_SHA<<endl;
+  cout<<"  Majordomo version: "<<MAJORDOMO_VERSION_STRING<<endl;
+  cout<<"  Majordomo SHA:     "<<MAJORDOMO_GIT_SHA<<endl;
   cout<<"  STF_LIB   SHA:     "<<STF_LIB_GIT_SHA<<endl;
 }
 // --------------------------------------------------------------------

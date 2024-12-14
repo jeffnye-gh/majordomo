@@ -2,7 +2,7 @@
 
 export OPT='--ctrlc --stf_force_zero_sha --stf_priv_modes USHM'
 export RESET_VECTOR_OPT='--reset_vector 0x00000000 --memory_addr 0x00000000 --bootrom ./common/bootrom.elf'
-export DRO=../../bin/cpm_dromajo
+export DRO=../../bin/majordomo
 BIN_DIR=./elf
 GOLDEN_DIR=./golden
 

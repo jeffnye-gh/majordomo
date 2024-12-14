@@ -31,7 +31,7 @@ std::shared_ptr<Options> opts(Options::getInstance());
 void usage(char *progname) {
     fprintf(stderr,
             "Usage:\n"
-            "  %s cosim $trace $dromajoargs ...\n"
+            "  %s cosim $trace $majordomoargs ...\n"
             "  %s read $trace\n",
             progname,
             progname);

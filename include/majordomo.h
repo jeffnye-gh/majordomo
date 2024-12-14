@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2017,2018,2019, Esperanto Technologies Inc.
+ * Copyright (C) 2024 Jeff Nye
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef DROMAJO_H
-#define DROMAJO_H
-
+#pragma once
 #include <stdio.h>
-
 #include "riscv_machine.h"
 
 extern FILE *majordomo_stdout;
 extern FILE *majordomo_stderr;
-
-#endif

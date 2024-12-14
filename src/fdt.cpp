@@ -301,8 +301,8 @@ int riscv_build_fdt(RISCVMachine *m, uint8_t *dst, const char *dtb_name, const c
         fdt_begin_node(s, "");
         fdt_prop_u32(s, "#address-cells", 2);
         fdt_prop_u32(s, "#size-cells", 2);
-        fdt_prop_str(s, "compatible", "ucbbar,dromajo-bar_dev");
-        fdt_prop_str(s, "model", "ucbbar,dromajo-bare");
+        fdt_prop_str(s, "compatible", "ucbbar,majordomo-bar_dev");
+        fdt_prop_str(s, "model", "ucbbar,majordomo-bare");
 
         /* CPU list */
         fdt_begin_node(s, "cpus");
@@ -362,7 +362,7 @@ int riscv_build_fdt(RISCVMachine *m, uint8_t *dst, const char *dtb_name, const c
         fdt_begin_node(s, "soc");
         fdt_prop_u32(s, "#address-cells", 2);
         fdt_prop_u32(s, "#size-cells", 2);
-        fdt_prop_tab_str(s, "compatible", "ucbbar,dromajo-bar-soc", "simple-bus", NULL);
+        fdt_prop_tab_str(s, "compatible", "ucbbar,majordomo-bar-soc", "simple-bus", NULL);
         fdt_prop(s, "ranges", NULL, 0);
 
         fdt_begin_node_num(s, "clint", m->clint_base_addr);
@@ -489,9 +489,9 @@ int riscv_build_fdt(RISCVMachine *m, uint8_t *dst, const char *dtb_name, const c
 
 #ifdef DUMP_DTB
     {
-        FILE *f = fopen("dromajo.dtb", "wb");
+        FILE *f = fopen("majordomo.dtb", "wb");
         if (!f) {
-            vm_error("majordomo: %s: %s\n", "dromajo.dtb", strerror(errno));
+            vm_error("majordomo: %s: %s\n", "majordomo.dtb", strerror(errno));
             return -1;
         }
         fwrite(dst, 1, size, f);

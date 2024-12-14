@@ -77,7 +77,7 @@ void launch_alternate_executable(char **argv) {
     const char *p, *exename;
     int         len;
 
-    snprintf(new_exename, sizeof(new_exename), "dromajo64");
+    snprintf(new_exename, sizeof(new_exename), "majordomo64");
     exename = argv[0];
     p       = strrchr(exename, '/');
     if (p) {

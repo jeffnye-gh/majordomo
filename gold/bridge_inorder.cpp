@@ -4,12 +4,12 @@
 #include "Gold_core.hpp"
 #include "Gold_notify.hpp"
 
-/* dromajo is an emulator, so much of the OoO capabilities are not needed.
+/* majordomo is an emulator, so much of the OoO capabilities are not needed.
  */
 
-extern uint8_t dromajo_get_byte_direct(uint64_t paddr);
+extern uint8_t majordomo_get_byte_direct(uint64_t paddr);
 
-static Gold_mem               mem(dromajo_get_byte_direct);
+static Gold_mem               mem(majordomo_get_byte_direct);
 static std::vector<Gold_core> cores;
 
 void check_inorder_init(int ncores) {

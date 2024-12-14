@@ -133,7 +133,7 @@ struct RISCVMachine {
     /* Clear mimpid, marchid, mvendorid */
     bool clear_ids;
 
-    /* Extension state, not used by Dromajo itself */
+    /* Extension state, not used by majordomo itself */
     void *ext_state;
 
 };

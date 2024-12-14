@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export OPT='--ctrlc --stf_force_zero_sha --stf_priv_modes USHM'
-export DRO=../../bin/cpm_dromajo
+export DRO=../../bin/majordomo
 export STF_RECORD_DUMP=/data/tools/bin/stf_record_dump
 INPUT_FILE=common/stf_load_store.bare.riscv
 

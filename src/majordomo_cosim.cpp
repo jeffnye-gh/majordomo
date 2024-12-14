@@ -1,5 +1,5 @@
 /*
- * API for Dromajo-based cosimulation
+ * API for majordomo-based cosimulation
  *
  * Copyright (C) 2018,2019, Esperanto Technologies Inc.
  *
@@ -456,7 +456,7 @@ int majordomo_cosim_step(majordomo_cosim_state_t *state, int hartid, uint64_t du
 /*
  * majordomo_cosim_override_mem --
  *
- * DUT sets Dromajo memory. Used so that other devices (i.e. block device, accelerators, can write to memory).
+ * DUT sets majordomo memory. Used so that other devices (i.e. block device, accelerators, can write to memory).
  */
 int majordomo_cosim_override_mem(majordomo_cosim_state_t *state, int hartid, uint64_t dut_paddr, uint64_t dut_val, int size_log2) {
     RISCVMachine * r = (RISCVMachine *)state;

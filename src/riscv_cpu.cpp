@@ -501,7 +501,7 @@ int riscv_cpu_get_phys_addr(RISCVCPUState *s, target_ulong vaddr, riscv_memory_a
             /*
               RISC-V Priv. Spec 1.11 (draft) Section 4.3.1 offers two
               ways to handle the A and D TLB flags.  Spike uses the
-              software managed approach whereas DROMAJO used to manage
+              software managed approach whereas MAJORDOMO used to manage
               them (causing far fewer exceptions).
             */
             if (CONFIG_SW_MANAGED_A_AND_D) {
@@ -632,7 +632,7 @@ no_inline int riscv_cpu_read_memory(RISCVCPUState *s, mem_uint_t *pval, target_u
 #if 0
             static uint64_t suppress = 1;
             if (paddr != suppress) {
-                fprintf(majordomo_stderr, "Dromajo: dropping %d-bit load from 0x%lx\n",
+                fprintf(majordomo_stderr, "majordomo: dropping %d-bit load from 0x%lx\n",
                         1 << (3 + size_log2), paddr);
                 suppress = paddr;
             }
@@ -728,7 +728,7 @@ no_inline int riscv_cpu_write_memory(RISCVCPUState *s, target_ulong addr, mem_ui
 #if 0
             static uint64_t suppress = 1;
             if (paddr != suppress) {
-                fprintf(majordomo_stderr, "Dromajo: dropping %d-bit store to 0x%lx\n",
+                fprintf(majordomo_stderr, "majordomo: dropping %d-bit store to 0x%lx\n",
                         1 << (3 + size_log2), paddr);
                 suppress = paddr;
             }
@@ -2774,7 +2774,7 @@ void riscv_cpu_serialize(RISCVCPUState *s, const char *dump_name, const uint64_t
     if (conf_fd == 0)
         err(-3, "opening %s for serialization", conf_name);
 
-    fprintf(conf_fd, "# DROMAJO serialization file\n");
+    fprintf(conf_fd, "# majordomo serialization file\n");
 
     fprintf(conf_fd, "pc:0x%llx\n", (long long)s->pc);
 

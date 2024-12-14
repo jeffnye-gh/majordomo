@@ -1,5 +1,5 @@
 #
-# Dromajo, a RISC-V Emulator (based on Fabrice Bellard's RISCVEMU/TinyEMU)
+# Majordomo, a RISC-V Emulator (based on Fabrice Bellard's RISCVEMU/TinyEMU)
 #
 # Copyright (c) 2016-2017 Fabrice Bellard
 # Copyright (c) 2018,2019,2020 Esperanto Technology
@@ -41,19 +41,16 @@
 
 cmake_minimum_required(VERSION 3.1)
 set(CMAKE_CXX_STANDARD 20)
-project(dromajo)
+project(majordomo)
 option(TRACEOS "TRACEOS" OFF)
 option(SIMPOINT "SIMPOINT" OFF)
 option(GOLDMEM "GOLDMEM" OFF)
 option(WARMUP "WARMUP" OFF)
 
 # Set version numbers
-set(VERSION_MAJOR 3)
+set(VERSION_MAJOR 4)
 set(VERSION_MINOR 0)
 set(VERSION_PATCH 0)
-#add_definitions(-DVERSION_MAJOR=${VERSION_MAJOR})
-#add_definitions(-DVERSION_MINOR=${VERSION_MINOR})
-#add_definitions(-DVERSION_PATCH=${VERSION_PATCH})
 # -------------------------------------------------------------------------
 # -------------------------------------------------------------------------
 find_package(Boost REQUIRED COMPONENTS program_options)
@@ -68,7 +65,7 @@ find_package(Git REQUIRED)
 execute_process(
     COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE DROMAJO_GIT_SHA
+    OUTPUT_VARIABLE MAJORDOMO_GIT_SHA
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
@@ -130,10 +127,6 @@ if (SIMPOINT)
     )
 endif ()
 
-# Set Version Header
-#set(CONFIG_VERSION "Dromajo 2.0.0")
-#configure_file(include/config.h.in config.h @ONLY)
-
 if (WARMUP)
   message(STATUS "Checkpoint with WARMUP is on (typically for simpoints, but any checkpoint can use it).")
     add_compile_options( -DLIVECACHE)
@@ -156,7 +149,7 @@ if (GOLDMEM)
 endif ()
 
 # libmajordomo_cosim
-add_library(dromajo_cosim STATIC
+add_library(majordomo_cosim STATIC
         src/bin_utils.cpp
         src/block_device.cpp
         src/cutils.cpp
@@ -188,19 +181,19 @@ add_library(dromajo_cosim STATIC
         src/zfa.cpp
         )
 
-add_executable(dromajo src/majordomo.cpp)
-add_executable(dromajo_cosim_test src/majordomo_cosim_test.cpp)
+add_executable(majordomo src/majordomo.cpp)
+add_executable(majordomo_cosim_test src/majordomo_cosim_test.cpp)
 
-target_link_libraries(dromajo Boost::program_options)
-target_link_libraries(dromajo_cosim_test Boost::program_options)
-target_link_libraries(dromajo_cosim Boost::program_options)
+target_link_libraries(majordomo Boost::program_options)
+target_link_libraries(majordomo_cosim_test Boost::program_options)
+target_link_libraries(majordomo_cosim Boost::program_options)
 
 if (GOLDMEM)
-  target_link_libraries(dromajo dromajo_cosim gold)
-  target_link_libraries(dromajo_cosim_test dromajo_cosim gold)
+  target_link_libraries(majordomo majordomo_cosim gold)
+  target_link_libraries(majordomo_cosim_test majordomo_cosim gold)
 else ()
-  target_link_libraries(dromajo dromajo_cosim)
-  target_link_libraries(dromajo_cosim_test dromajo_cosim)
+  target_link_libraries(majordomo majordomo_cosim)
+  target_link_libraries(majordomo_cosim_test majordomo_cosim)
 endif ()
 
 include_directories(include external ${CMAKE_CURRENT_BINARY_DIR})
@@ -209,17 +202,17 @@ include_directories(include external ${CMAKE_CURRENT_BINARY_DIR})
 # Change the name of the copied file if SIMPOINT option is enabled
 # -------------------------------------------------------------------
 if(SIMPOINT)
-    set(DROMAJO_NAME cpm_simpoint_dromajo)
+    set(MAJORDOMO_NAME simpoint_majordomo)
 else()
-    set(DROMAJO_NAME cpm_dromajo)
+    set(MAJORDOMO_NAME majordomo)
 endif()
 
 set(LOCAL_BIN_DIR ../bin)
-add_custom_command(TARGET dromajo POST_BUILD
+add_custom_command(TARGET majordomo POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${LOCAL_BIN_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:dromajo>
-                                     ${LOCAL_BIN_DIR}/${DROMAJO_NAME}
-    COMMENT "Copying dromajo to ${LOCAL_BIN_DIR} as ${DROMAJO_NAME}")
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:majordomo>
+                                     ${LOCAL_BIN_DIR}/${MAJORDOMO_NAME}
+    COMMENT "Copying majordomo to ${LOCAL_BIN_DIR} as ${MAJORDOMO_NAME}")
 
 # -------------------------------------------------------------------
 # STF
@@ -229,11 +222,11 @@ set(STF_LIB_BASE ${PROJECT_SOURCE_DIR}/stf_lib)
 include(${STF_LIB_BASE}/cmake/stf-config.cmake)
 
 include_directories(${STF_LIB_BASE})
-target_link_directories(dromajo PRIVATE ${STF_LIB_BASE}/build/lib)
-target_link_libraries(dromajo ${STF_LINK_LIBS})
+target_link_directories(majordomo PRIVATE ${STF_LIB_BASE}/build/lib)
+target_link_libraries(majordomo ${STF_LINK_LIBS})
 
-target_link_directories(dromajo_cosim PRIVATE ${STF_LIB_BASE}/build/lib)
-target_link_libraries(dromajo_cosim ${STF_LINK_LIBS})
+target_link_directories(majordomo_cosim PRIVATE ${STF_LIB_BASE}/build/lib)
+target_link_libraries(majordomo_cosim ${STF_LINK_LIBS})
 
 # Add STF library to the build
 add_subdirectory (${STF_LIB_BASE})
@@ -249,10 +242,10 @@ add_subdirectory (tests)
 # -------------------------------------------------------------------
 if (${CMAKE_HOST_APPLE})
     include_directories(/usr/local/include /usr/local/include/libelf /opt/homebrew/include /opt/homebrew/include/libelf)
-    target_link_libraries(dromajo_cosim -L/usr/local/lib -L/opt/homebrew/lib -lelf)
+    target_link_libraries(majordomo_cosim -L/usr/local/lib -L/opt/homebrew/lib -lelf)
 else ()
     # add librt for Linux
-    target_link_libraries(dromajo_cosim rt)
+    target_link_libraries(majordomo_cosim rt)
 endif ()
 
-install(TARGETS dromajo_cosim DESTINATION .)
+install(TARGETS majordomo_cosim DESTINATION .)

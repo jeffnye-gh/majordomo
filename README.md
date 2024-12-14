@@ -94,6 +94,25 @@ cmake ..
 make -j$(nproc) md_regress
 ```
 
+Results will look similar to this, execution times are dependent on 
+host compiler optimizations.
+
+```
+Running tests...
+Test project /home/jeff/Development/jeffnye-gh/tmp/majordomo/build/tests
+    Start 1: stf_load_store_baremetal
+1/4 Test #1: stf_load_store_baremetal .........   Passed   ??.?? sec
+    Start 2: reset_vector_tests
+2/4 Test #2: reset_vector_tests ...............   Passed   ??.?? sec
+    Start 3: directed_tests
+3/4 Test #3: directed_tests ...................   Passed   ??.?? sec
+    Start 4: riscv_isa_tests
+4/4 Test #4: riscv_isa_tests ..................   Passed   ??.?? sec
+
+100% tests passed, 0 tests failed out of 4
+
+```
+
 ## Build artifacts
 ```
 TODO: description

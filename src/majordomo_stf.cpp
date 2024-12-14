@@ -110,13 +110,14 @@ void stf_trace_open(RISCVCPUState *s, target_ulong PC)
           vMinor = 0;
           vPatch = 0;
         } else {
-          drom_sha   = std::string("MAJORDOMO SHA:")+std::string(DROMAJO_GIT_SHA);
+          drom_sha   = std::string("MAJORDOMO SHA:")+std::string(MAJORDOMO_GIT_SHA);
           stflib_sha = std::string("STF_LIB SHA:")+std::string(STF_LIB_GIT_SHA);
           vMajor = VERSION_MAJOR;
           vMinor = VERSION_MINOR;
           vPatch = VERSION_PATCH;
         }
 
+        //At time of writing stf_lib does not know about majordomo
         stf_writer.addTraceInfo(stf::TraceInfoRecord(
            stf::STF_GEN::STF_GEN_DROMAJO,vMajor,vMinor,vPatch,drom_sha)
         );

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(dromajo_tests)
+project(majordomo_tests)
 
-message(STATUS "Configuring dromajo md_regress target")
+message(STATUS "Configuring majordomo md_regress target")
 
 include_directories(${PROJECT_SOURCE_DIR}/..)
 
@@ -35,7 +35,7 @@ add_custom_target(isa_test_suite
 
 # Ensure the riscv_isa_test is run when md_regress is run
 add_custom_target(md_regress)
-add_dependencies(md_regress dromajo isa_test_suite)
+add_dependencies(md_regress majordomo isa_test_suite)
 
 add_custom_command(TARGET md_regress POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E echo "Running tests..."
