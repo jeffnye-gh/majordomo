@@ -1,0 +1,31 @@
+# distutils: language = c++
+
+from libc.stdint cimport *
+cdef extern from "stf_descriptor.hpp" namespace "stf::descriptors::internal":
+    cdef enum _InternalDescriptor 'stf::descriptors::internal::Descriptor':
+        _STF_INST_REG 'stf::descriptors::internal::Descriptor::STF_INST_REG'
+        _STF_INST_OPCODE16 'stf::descriptors::internal::Descriptor::STF_INST_OPCODE16'
+        _STF_INST_OPCODE32 'stf::descriptors::internal::Descriptor::STF_INST_OPCODE32'
+        _STF_INST_MEM_ACCESS 'stf::descriptors::internal::Descriptor::STF_INST_MEM_ACCESS'
+        _STF_INST_MEM_CONTENT 'stf::descriptors::internal::Descriptor::STF_INST_MEM_CONTENT'
+        _STF_INST_PC_TARGET 'stf::descriptors::internal::Descriptor::STF_INST_PC_TARGET'
+        _STF_EVENT 'stf::descriptors::internal::Descriptor::STF_EVENT'
+        _STF_EVENT_PC_TARGET 'stf::descriptors::internal::Descriptor::STF_EVENT_PC_TARGET'
+        _STF_PAGE_TABLE_WALK 'stf::descriptors::internal::Descriptor::STF_PAGE_TABLE_WALK'
+        _STF_BUS_MASTER_ACCESS 'stf::descriptors::internal::Descriptor::STF_BUS_MASTER_ACCESS'
+        _STF_BUS_MASTER_CONTENT 'stf::descriptors::internal::Descriptor::STF_BUS_MASTER_CONTENT'
+        _STF_COMMENT 'stf::descriptors::internal::Descriptor::STF_COMMENT'
+        _STF_FORCE_PC 'stf::descriptors::internal::Descriptor::STF_FORCE_PC'
+        _STF_INST_READY_REG 'stf::descriptors::internal::Descriptor::STF_INST_READY_REG'
+        _STF_PROCESS_ID_EXT 'stf::descriptors::internal::Descriptor::STF_PROCESS_ID_EXT'
+        _STF_INST_MICROOP 'stf::descriptors::internal::Descriptor::STF_INST_MICROOP'
+        _STF_IDENTIFIER 'stf::descriptors::internal::Descriptor::STF_IDENTIFIER'
+        _STF_ISA 'stf::descriptors::internal::Descriptor::STF_ISA'
+        _STF_INST_IEM 'stf::descriptors::internal::Descriptor::STF_INST_IEM'
+        _STF_TRACE_INFO 'stf::descriptors::internal::Descriptor::STF_TRACE_INFO'
+        _STF_TRACE_INFO_FEATURE 'stf::descriptors::internal::Descriptor::STF_TRACE_INFO_FEATURE'
+        _STF_VERSION 'stf::descriptors::internal::Descriptor::STF_VERSION'
+        _STF_VLEN_CONFIG 'stf::descriptors::internal::Descriptor::STF_VLEN_CONFIG'
+        _STF_END_HEADER 'stf::descriptors::internal::Descriptor::STF_END_HEADER'
+        _STF_RESERVED 'stf::descriptors::internal::Descriptor::STF_RESERVED'
+        _RESERVED_END 'stf::descriptors::internal::Descriptor::__RESERVED_END'

@@ -1,0 +1,165 @@
+name: dromajo-CI
+
+on: 
+  pull_request:
+    branches:
+      - master
+
+#====================================================================================
+#There are 4 modes
+#MODE 1 Conda=sparta CMAKE_BUILD_TYPE=Release
+#MODE 2 Conda=sparta CMAKE_BUILD_TYPE=<none>
+#MODE 3 Conda=base   CMAKE_BUILD_TYPE=Release
+#MODE 4 Conda=base   CMAKE_BUILD_TYPE=<none>
+jobs:
+  build_and_test:
+    runs-on: self-hosted 
+    steps:
+    - uses: actions/checkout@v4
+      name: Checkout code
+      with:
+        submodules: true
+        fetch-depth: 0
+    - name: Initialize and update submodules
+      run: git submodule update --init --recursive
+    - name: MODE 1 Build Project for Sparta/Release
+      run: |
+        pwd
+        cd .. 
+        source /opt/condor/how-to/env/setuprc.sh
+        cd dromajo
+        source /home/github-runner/miniconda3/etc/profile.d/conda.sh
+        mkdir -p release && cd release
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+        if [ $? -ne 0 ]; then
+          echo "ERROR: Cmake for release failed"
+          exit 1
+        fi
+        make -j$(nproc --all)
+        if [ $? -ne 0 ]; then
+          echo "ERROR: Build failed"
+          exit 1
+        fi
+      shell: bash
+    - name: MODE 1 Regression Test for Sparta/Release
+      run: |
+        cd .. 
+        source /opt/condor/how-to/env/setuprc.sh
+        cd dromajo
+        cd release
+        source /home/github-runner/miniconda3/etc/profile.d/conda.sh
+        conda activate sparta
+        make -j$(nproc --all) regress
+        if [ $? -ne 0 ]; then
+            echo "ERROR: Regression tests failed"
+            exit 1
+        fi
+      shell: bash  
+#====================================================================================
+    - name: MODE 2 Build Project for Sparta/<none>
+      run: |
+        cd .. 
+        source /opt/condor/how-to/env/setuprc.sh
+        cd dromajo
+        source /home/github-runner/miniconda3/etc/profile.d/conda.sh
+        conda activate sparta
+        mkdir -p build && cd build
+        cmake .. 
+        if [ $? -ne 0 ]; then
+          echo "ERROR: Cmake for plain build failed"
+          exit 1
+        fi
+        make -j$(nproc --all)
+        if [ $? -ne 0 ]; then
+          echo "ERROR: Build failed"
+          exit 1
+        fi
+      shell: bash
+    - name: MODE 2 Regression Test for Sparta/PlainBuild
+      run: |
+        cd .. 
+        source /opt/condor/how-to/env/setuprc.sh
+        cd dromajo
+        cd release
+        source /home/github-runner/miniconda3/etc/profile.d/conda.sh
+        conda activate sparta
+        make -j$(nproc --all) regress
+        if [ $? -ne 0 ]; then
+            echo "ERROR: Regression tests failed"
+            exit 1
+        fi
+      shell: bash  
+#====================================================================================
+    - name: MODE 3 Build Project for base/Release
+      run: |
+        cd .. 
+        source /opt/condor/how-to/env/setuprc.sh
+        cd dromajo
+        source /home/github-runner/miniconda3/etc/profile.d/conda.sh
+        conda deactivate    
+        conda deactivate    
+        conda activate
+        mkdir -p release && cd release
+        cmake .. -DCMAKE_BUILD_TYPE=Release 
+        if [ $? -ne 0 ]; then
+          echo "ERROR: Cmake for plain build failed"
+          exit 1
+        fi
+        make -j$(nproc --all)
+        if [ $? -ne 0 ]; then
+          echo "ERROR: Build failed"
+          exit 1
+        fi
+      shell: bash
+    - name: MODE 2 Regression Test for base/Release
+      run: |
+        cd .. 
+        source /opt/condor/how-to/env/setuprc.sh
+        cd dromajo
+        cd release
+        source /home/github-runner/miniconda3/etc/profile.d/conda.sh
+        conda activate sparta
+        make -j$(nproc --all) regress
+        if [ $? -ne 0 ]; then
+            echo "ERROR: Regression tests failed"
+            exit 1
+        fi
+      shell: bash  
+#====================================================================================
+    - name: MODE 4 Build Project for base/none
+      run: |
+        cd .. 
+        source /opt/condor/how-to/env/setuprc.sh
+        cd dromajo
+        source /home/github-runner/miniconda3/etc/profile.d/conda.sh
+        conda deactivate 
+        conda deactivate
+        conda activate
+        mkdir -p build && cd build
+        cmake .. 
+        if [ $? -ne 0 ]; then
+          echo "ERROR: Cmake for plain build failed"
+          exit 1
+        fi
+        make -j$(nproc --all)
+        if [ $? -ne 0 ]; then
+          echo "ERROR: Build failed"
+          exit 1
+        fi
+      shell: bash
+    - name: MODE 2 Regression Test for base/none
+      run: |      
+        cd .. 
+        source /opt/condor/how-to/env/setuprc.sh
+        cd dromajo
+        cd release
+        source /home/github-runner/miniconda3/etc/profile.d/conda.sh
+        conda deactivate
+        conda deactivate
+        conda activate
+        make -j$(nproc --all) regress
+        if [ $? -ne 0 ]; then
+            echo "ERROR: Regression tests failed"
+            exit 1
+        fi
+      shell: bash 
