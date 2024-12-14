@@ -87,7 +87,7 @@ extern uint32_t _XLEN;
 // ---------------------------------------------------------------------------
 #if REPORT_ILLEGAL == 1
 #define ILLEGAL_INSTR(S) { \
-  fprintf(dromajo_stderr,"ILLEGAL INSTR %s PC:0x%lx ENC:0x%08x OPC:%03x\n",S,s->pc,insn,insn&0x7F); \
+  fprintf(majordomo_stderr,"ILLEGAL INSTR %s PC:0x%lx ENC:0x%08x OPC:%03x\n",S,s->pc,insn,insn&0x7F); \
   goto illegal_insn; \
 }
 #else
@@ -98,7 +98,7 @@ extern uint32_t _XLEN;
 
 #if EXIT_ON_ILLEGAL_CSR == 1
 #define ILLEGAL_CSR(S) {  \
-  fprintf(dromajo_stderr,"ILLEGAL CSR ACCESS %s\n",S);  \
+  fprintf(majordomo_stderr,"ILLEGAL CSR ACCESS %s\n",S);  \
   goto illegal_insn;  \
 }
 #else
@@ -107,14 +107,14 @@ extern uint32_t _XLEN;
 
 // ---------------------------------------------------------------------------
 #define FALLTHROUGH() { \
-  fprintf(dromajo_stderr,"UNEXPECTED FALL THROUGH PC:0x%lx ENC:0x%08x\n",s->pc,insn);  \
+  fprintf(majordomo_stderr,"UNEXPECTED FALL THROUGH PC:0x%lx ENC:0x%08x\n",s->pc,insn);  \
   exit(1); \
 }
 
 // ---------------------------------------------------------------------------
 #if CAPTURE_LOG == 1
 #define CAPTURED_INSTR(S) { \
-  fprintf(dromajo_stderr,"CAPTURED INSTR %s PC:0x%lx ENC:0x%08x\n",S,s->pc,insn);  \
+  fprintf(majordomo_stderr,"CAPTURED INSTR %s PC:0x%lx ENC:0x%08x\n",S,s->pc,insn);  \
 }
 #else
 #define CAPTURED_INSTR(S)
@@ -123,7 +123,7 @@ extern uint32_t _XLEN;
 // ---------------------------------------------------------------------------
 #if REPORT_MMU_EXCEPT == 1
 #define MMU_EXCEPT() { \
-  fprintf(dromajo_stderr,"MMU_EXCEPTION PC:0x%lx ENC:0x%08x\n",s->pc,insn);  \
+  fprintf(majordomo_stderr,"MMU_EXCEPTION PC:0x%lx ENC:0x%08x\n",s->pc,insn);  \
   exit(1); \
 }
 #else

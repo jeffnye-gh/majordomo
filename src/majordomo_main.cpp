@@ -48,9 +48,9 @@
 #include "fs_wget.h"
 #endif
 
-FILE *dromajo_trace;
-FILE *dromajo_stdout;
-FILE *dromajo_stderr;
+FILE *majordomo_trace;
+FILE *majordomo_stdout;
+FILE *majordomo_stderr;
 
 BOOL virt_machine_run(RISCVMachine *s, int hartid, int n_cycles) {
     (void)virt_machine_get_sleep_duration(s, hartid, MAX_SLEEP_TIME);
@@ -86,7 +86,7 @@ void launch_alternate_executable(char **argv) {
         len = 0;
     }
     if (len + strlen(new_exename) > sizeof(filename) - 1) {
-        fprintf(dromajo_stderr, "%s: filename too long\n", exename);
+        fprintf(majordomo_stderr, "%s: filename too long\n", exename);
         exit(1);
     }
     memcpy(filename, exename, len);

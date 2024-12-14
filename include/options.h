@@ -45,7 +45,7 @@
 #include <string>
 #include <vector>
 
-extern FILE* dromajo_stderr;
+extern FILE* majordomo_stderr;
 extern void usage_isa();
 extern void usage_interactive();
 extern void usage(const char *prog, const char *msg);

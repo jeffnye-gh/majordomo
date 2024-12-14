@@ -46,7 +46,7 @@ using namespace std;
 
 void usage_isa()
 {
-  fprintf(dromajo_stderr,"\nSupported/Implemented ISA Extensions\n");
+  fprintf(majordomo_stderr,"\nSupported/Implemented ISA Extensions\n");
   for (const auto& [key, _] : extensionMap) {
       fprintf(stdout, "  -  %s\n", key.c_str());
   }
@@ -55,13 +55,13 @@ void usage_isa()
 
 void usage_interactive()
 {
-  fprintf(dromajo_stderr,"\nInteractive Command Help\n");
+  fprintf(majordomo_stderr,"\nInteractive Command Help\n");
   fprintf(stdout, "Nothing so far\n");
   exit(1);
 }
 
 void usage(const char *prog, const char *msg) {
-  fprintf(dromajo_stderr,
+  fprintf(majordomo_stderr,
 "\nmessage: %s\n\n"
 "    Majordomo version:  %s\n"
 "    Majordomo SHA:      %s\n"

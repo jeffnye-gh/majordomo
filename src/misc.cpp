@@ -47,7 +47,7 @@ void dromajo_default_error_log(int hartid, const char *fmt, ...) {
     va_list args;
 
     va_start(args, fmt);
-    vfprintf(dromajo_stderr, fmt, args);
+    vfprintf(majordomo_stderr, fmt, args);
     va_end(args);
 }
 
@@ -55,7 +55,7 @@ void dromajo_default_debug_log(int hartid, const char *fmt, ...) {
     va_list args;
 
     va_start(args, fmt);
-    vfprintf(dromajo_stderr, fmt, args);
+    vfprintf(majordomo_stderr, fmt, args);
     va_end(args);
 }
 

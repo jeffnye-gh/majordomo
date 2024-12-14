@@ -130,7 +130,7 @@ void __attribute__((format(printf, 1, 2))) log_printf(const char *fmt, ...) {
 
 static void fprint_target_ulong(FILE *f, target_ulong a) { fprintf(f, "%" PR_target_ulong, a); }
 
-static void print_target_ulong(target_ulong a) { fprint_target_ulong(dromajo_stderr, a); }
+static void print_target_ulong(target_ulong a) { fprint_target_ulong(majordomo_stderr, a); }
 
 static const char *reg_name[32]
     = {"zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2", "s0", "s1", "a0",  "a1",  "a2", "a3", "a4", "a5",
@@ -141,32 +141,32 @@ static void         dump_regs(RISCVCPUState *s) {
     int         i, cols;
     const char *priv_str = "USHM";
     cols                 = 256 / 64;
-    fprintf(dromajo_stderr, "pc =");
+    fprintf(majordomo_stderr, "pc =");
     print_target_ulong(s->pc);
-    fprintf(dromajo_stderr, " ");
+    fprintf(majordomo_stderr, " ");
     for (i = 1; i < 32; i++) {
-        fprintf(dromajo_stderr, "%-3s=", reg_name[i]);
+        fprintf(majordomo_stderr, "%-3s=", reg_name[i]);
         print_target_ulong(s->reg[i]);
         if ((i & (cols - 1)) == (cols - 1))
-            fprintf(dromajo_stderr, "\n");
+            fprintf(majordomo_stderr, "\n");
         else
-            fprintf(dromajo_stderr, " ");
+            fprintf(majordomo_stderr, " ");
     }
-    fprintf(dromajo_stderr, "priv=%c", priv_str[s->priv]);
-    fprintf(dromajo_stderr, " mstatus=");
+    fprintf(majordomo_stderr, "priv=%c", priv_str[s->priv]);
+    fprintf(majordomo_stderr, " mstatus=");
     print_target_ulong(get_mstatus(s, (target_ulong)-1));
-    fprintf(dromajo_stderr, " insn_counter=%" PRId64, s->insn_counter);
-    fprintf(dromajo_stderr, " minstret=%" PRId64, s->minstret);
-    fprintf(dromajo_stderr, " mcycle=%" PRId64, s->mcycle);
-    fprintf(dromajo_stderr, "\n");
+    fprintf(majordomo_stderr, " insn_counter=%" PRId64, s->insn_counter);
+    fprintf(majordomo_stderr, " minstret=%" PRId64, s->minstret);
+    fprintf(majordomo_stderr, " mcycle=%" PRId64, s->mcycle);
+    fprintf(majordomo_stderr, "\n");
 #if 1
-    fprintf(dromajo_stderr, " mideleg=");
+    fprintf(majordomo_stderr, " mideleg=");
     print_target_ulong(s->mideleg);
-    fprintf(dromajo_stderr, " mie=");
+    fprintf(majordomo_stderr, " mie=");
     print_target_ulong(s->mie);
-    fprintf(dromajo_stderr, " mip=");
+    fprintf(majordomo_stderr, " mip=");
     print_target_ulong(s->mip);
-    fprintf(dromajo_stderr, "\n");
+    fprintf(majordomo_stderr, "\n");
 #endif
 }
 
@@ -618,9 +618,9 @@ no_inline int riscv_cpu_read_memory(RISCVCPUState *s, mem_uint_t *pval, target_u
         pr = get_phys_mem_range_pmp(s, paddr, size, PMPCFG_R, &pmp_blocked);
         if (pmp_blocked) {
 #ifdef DUMP_INVALID_MEM_ACCESS
-            fprintf(dromajo_stderr, "riscv_cpu_read_memory: invalid physical address 0x");
+            fprintf(majordomo_stderr, "riscv_cpu_read_memory: invalid physical address 0x");
             print_target_ulong(paddr);
-            fprintf(dromajo_stderr, "\n");
+            fprintf(majordomo_stderr, "\n");
 #endif
             s->pending_tval      = addr;
             s->pending_exception = CAUSE_FAULT_LOAD;
@@ -632,7 +632,7 @@ no_inline int riscv_cpu_read_memory(RISCVCPUState *s, mem_uint_t *pval, target_u
 #if 0
             static uint64_t suppress = 1;
             if (paddr != suppress) {
-                fprintf(dromajo_stderr, "Dromajo: dropping %d-bit load from 0x%lx\n",
+                fprintf(majordomo_stderr, "Dromajo: dropping %d-bit load from 0x%lx\n",
                         1 << (3 + size_log2), paddr);
                 suppress = paddr;
             }
@@ -674,9 +674,9 @@ no_inline int riscv_cpu_read_memory(RISCVCPUState *s, mem_uint_t *pval, target_u
 #endif
             else {
 #ifdef DUMP_INVALID_MEM_ACCESS
-                fprintf(dromajo_stderr, "unsupported device read access: addr=0x");
+                fprintf(majordomo_stderr, "unsupported device read access: addr=0x");
                 print_target_ulong(paddr);
-                fprintf(dromajo_stderr, " width=%d bits\n", 1 << (3 + size_log2));
+                fprintf(majordomo_stderr, " width=%d bits\n", 1 << (3 + size_log2));
 #endif
                 ret = 0;
             }
@@ -728,7 +728,7 @@ no_inline int riscv_cpu_write_memory(RISCVCPUState *s, target_ulong addr, mem_ui
 #if 0
             static uint64_t suppress = 1;
             if (paddr != suppress) {
-                fprintf(dromajo_stderr, "Dromajo: dropping %d-bit store to 0x%lx\n",
+                fprintf(majordomo_stderr, "Dromajo: dropping %d-bit store to 0x%lx\n",
                         1 << (3 + size_log2), paddr);
                 suppress = paddr;
             }
@@ -772,9 +772,9 @@ no_inline int riscv_cpu_write_memory(RISCVCPUState *s, target_ulong addr, mem_ui
 #endif
             else {
 #ifdef DUMP_INVALID_MEM_ACCESS
-                fprintf(dromajo_stderr, "unsupported device write access: addr=0x");
+                fprintf(majordomo_stderr, "unsupported device write access: addr=0x");
                 print_target_ulong(paddr);
-                fprintf(dromajo_stderr, " width=%d bits\n", 1 << (3 + size_log2));
+                fprintf(majordomo_stderr, " width=%d bits\n", 1 << (3 + size_log2));
 #endif
             }
         }
@@ -1361,7 +1361,7 @@ static int csr_read(RISCVCPUState *s, uint32_t funct3,
         case 0x344: val = s->mip; break;
 
         case 0x744: //mcontext
-            if(opts->en_unimpl_csr_msg) fprintf(dromajo_stderr,"-W: access to unimpl mcontext iqnored\n");
+            if(opts->en_unimpl_csr_msg) fprintf(majordomo_stderr,"-W: access to unimpl mcontext iqnored\n");
             val = s->unimpl_mcontext;
             break;
 
@@ -1551,7 +1551,7 @@ static int csr_read(RISCVCPUState *s, uint32_t funct3,
 #ifdef DUMP_INVALID_CSR
             /* the 'time' counter is usually emulated */
             if (csr != 0xc01 && csr != 0xc81) {
-                fprintf(dromajo_stderr, "csr_read: invalid CSR=0x%x\n", csr);
+                fprintf(majordomo_stderr, "csr_read: invalid CSR=0x%x\n", csr);
             }
 #endif
             *pval = 0;
@@ -1640,9 +1640,9 @@ static int csr_write(RISCVCPUState *s, uint32_t funct3, uint32_t csr, target_ulo
     target_ulong mask;
 
 #if defined(DUMP_CSR)
-    fprintf(dromajo_stderr, "csr_write: hardid=%d csr=0x%03x val=0x", (int)s->mhartid, csr);
+    fprintf(majordomo_stderr, "csr_write: hardid=%d csr=0x%03x val=0x", (int)s->mhartid, csr);
     print_target_ulong(val);
-    fprintf(dromajo_stderr, "\n");
+    fprintf(majordomo_stderr, "\n");
 #endif
 
     if (s->machine->hooks.csr_write)
@@ -1767,7 +1767,7 @@ static int csr_write(RISCVCPUState *s, uint32_t funct3, uint32_t csr, target_ulo
             break;
 
         case 0x744: //mcontext
-            if(opts->en_unimpl_csr_msg) fprintf(dromajo_stderr,"-W: access to unimpl mcontext iqnored\n");
+            if(opts->en_unimpl_csr_msg) fprintf(majordomo_stderr,"-W: access to unimpl mcontext iqnored\n");
             break;
 
         case 0x7a0:  // tselect
@@ -1947,24 +1947,24 @@ static int csr_write(RISCVCPUState *s, uint32_t funct3, uint32_t csr, target_ulo
 #ifdef SIMPOINT_BB
         case 0x8C2:
             if ((val & 3) == 3) {
-                fprintf(dromajo_stderr, "simpoint adjust maxinsns to %lld\n", (long long)val >> 2);
+                fprintf(majordomo_stderr, "simpoint adjust maxinsns to %lld\n", (long long)val >> 2);
                 s->machine->common.maxinsns = val >> 2;
             } else if ((val & 3) == 2) {
-                fprintf(dromajo_stderr, "simpoint terminate\n");
+                fprintf(majordomo_stderr, "simpoint terminate\n");
                 s->benchmark_exit_code  = val >> 2;
                 s->terminate_simulation = 1;
             } else if ((val & 1) && simpoint_roi) {
-                fprintf(dromajo_stderr, "simpoint ROI already started\n");
+                fprintf(majordomo_stderr, "simpoint ROI already started\n");
             } else if ((val & 1) == 0 && simpoint_roi) {
                 if(s->machine->common.simpoint_en_bbv){
-                  fprintf(dromajo_stderr, "simpoint ROI finished\n");
+                  fprintf(majordomo_stderr, "simpoint ROI finished\n");
                 }
                 simpoint_roi = 0;
             } else if ((val & 1) == 0 && simpoint_roi == 0) {
-                fprintf(dromajo_stderr, "simpoint ROI already finished\n");
+                fprintf(majordomo_stderr, "simpoint ROI already finished\n");
             } else {
               if(s->machine->common.simpoint_en_bbv){
-                fprintf(dromajo_stderr, "simpoint ROI started\n");
+                fprintf(majordomo_stderr, "simpoint ROI started\n");
                 simpoint_roi = 1;
               }
             }
@@ -1975,7 +1975,7 @@ static int csr_write(RISCVCPUState *s, uint32_t funct3, uint32_t csr, target_ulo
 
         invalid_csr:
 #ifdef DUMP_INVALID_CSR
-            fprintf(dromajo_stderr, "csr_write: invalid CSR=0x%x\n", csr);
+            fprintf(majordomo_stderr, "csr_write: invalid CSR=0x%x\n", csr);
 #endif
             return -1;
     }
@@ -2013,22 +2013,22 @@ static void raise_exception2(RISCVCPUState *s, uint64_t cause, target_ulong tval
     };
 
     if (cause & CAUSE_INTERRUPT)
-        fprintf(dromajo_stderr,
+        fprintf(majordomo_stderr,
                 "hartid=%d: exception interrupt #%d, epc 0x%016jx\n",
                 (int)s->mhartid,
                 (int)(cause & 63),
                 (uintmax_t)s->pc);
     else if (cause <= CAUSE_STORE_PAGE_FAULT) {
-        fprintf(dromajo_stderr,
+        fprintf(majordomo_stderr,
                 "hartid=%d priv: %d exception %s, epc 0x%016jx\n",
                 (int)s->mhartid,
                 s->priv,
                 cause_s[cause],
                 (uintmax_t)s->pc);
-        fprintf(dromajo_stderr, "hartid=%d            tval 0x%016jx\n", (int)s->mhartid, (uintmax_t)tval);
+        fprintf(majordomo_stderr, "hartid=%d            tval 0x%016jx\n", (int)s->mhartid, (uintmax_t)tval);
     } else {
-        fprintf(dromajo_stderr, "hartid=%d: exception %d, epc 0x%016jx\n", (int)s->mhartid, (int)cause, (uintmax_t)s->pc);
-        fprintf(dromajo_stderr, "hartid=%d:           tval 0x%016jx\n", (int)s->mhartid, (uintmax_t)tval);
+        fprintf(majordomo_stderr, "hartid=%d: exception %d, epc 0x%016jx\n", (int)s->mhartid, (int)cause, (uintmax_t)s->pc);
+        fprintf(majordomo_stderr, "hartid=%d:           tval 0x%016jx\n", (int)s->mhartid, (uintmax_t)tval);
     }
 #endif
 
@@ -2119,7 +2119,7 @@ static inline uint32_t get_pending_irq_mask(RISCVCPUState *s) {
     uint32_t pending_ints, enabled_ints;
 
 #ifdef DUMP_INTERRUPTS
-    fprintf(dromajo_stderr, "get_irq_mask: mip=0x%x mie=0x%x mideleg=0x%x\n", s->mip, s->mie, s->mideleg);
+    fprintf(majordomo_stderr, "get_irq_mask: mip=0x%x mie=0x%x mideleg=0x%x\n", s->mip, s->mie, s->mideleg);
 #endif
 
     pending_ints = s->mip & s->mie;
@@ -2185,7 +2185,7 @@ static int __must_use_result raise_interrupt(RISCVCPUState *s) {
 
     irq_num = get_irq_num(mask);
 #ifdef DUMP_INTERRUPTS
-    fprintf(dromajo_stderr,
+    fprintf(majordomo_stderr,
             "raise_interrupt: irq=%d priv=%d pc=%llx hartid=%d\n",
             irq_num,
             s->priv,
@@ -2346,7 +2346,7 @@ void riscv_repair_csr(RISCVCPUState *s, uint32_t reg_num, uint64_t csr_num, uint
             break;
 
         default:
-            fprintf(dromajo_stderr, "riscv_repair_csr: This CSR is unsupported for repairing: %lx\n", (unsigned long)csr_num);
+            fprintf(majordomo_stderr, "riscv_repair_csr: This CSR is unsupported for repairing: %lx\n", (unsigned long)csr_num);
             break;
     }
 }
@@ -2631,7 +2631,7 @@ static void create_boot_rom(RISCVCPUState *s, const char *file, const uint64_t c
     // dcsr.stoptime  = 1
     // dcsr = 0x600 | (PrivLevel & 0x3)
     if (s->priv == 2) {
-        fprintf(dromajo_stderr, "UNSUPORTED Priv mode (no hyper)\n");
+        fprintf(majordomo_stderr, "UNSUPORTED Priv mode (no hyper)\n");
         exit(-4);
     }
 
@@ -2727,7 +2727,7 @@ static void create_boot_rom(RISCVCPUState *s, const char *file, const uint64_t c
     // Recover CLINT (Close to the end of the recovery to avoid extra cycles)
     // TODO: One per hart (multicore/SMP)
 
-    fprintf(dromajo_stderr,
+    fprintf(majordomo_stderr,
             "clint hartid=%d timecmp=%" PRId64 " cycles (%" PRId64 ")\n",
             (int)s->mhartid,
             s->timecmp,
@@ -2753,7 +2753,7 @@ static void create_boot_rom(RISCVCPUState *s, const char *file, const uint64_t c
     rom[code_pos++] = 0x7b200073;
 
     if (sizeof rom / sizeof *rom <= data_pos || data_pos_start <= code_pos) {
-        fprintf(dromajo_stderr,
+        fprintf(majordomo_stderr,
                 "ERROR: ROM is too small. ROM_SIZE should increase.  "
                 "Current code_pos=%d data_pos=%d\n",
                 code_pos,
@@ -2846,7 +2846,7 @@ void riscv_cpu_serialize(RISCVCPUState *s, const char *dump_name, const uint64_t
     }
 
     if (!boot_ram || !main_ram_found) {
-        fprintf(dromajo_stderr, "ERROR: could not find boot and main ram???\n");
+        fprintf(majordomo_stderr, "ERROR: could not find boot and main ram???\n");
         exit(-3);
     }
 
@@ -2855,16 +2855,16 @@ void riscv_cpu_serialize(RISCVCPUState *s, const char *dump_name, const uint64_t
     snprintf(f_name, n, "%s.bootram", dump_name);
 
     if (s->priv != 3 || ROM_BASE_ADDR + ROM_SIZE < s->pc) {
-        fprintf(dromajo_stderr, "NOTE: creating a new boot rom\n");
+        fprintf(majordomo_stderr, "NOTE: creating a new boot rom\n");
         create_boot_rom(s, f_name, clint_base_addr);
     } else if (BOOT_BASE_ADDR < s->pc) {
-        fprintf(dromajo_stderr, "ERROR: could not checkpoint when running inside the ROM\n");
+        fprintf(majordomo_stderr, "ERROR: could not checkpoint when running inside the ROM\n");
         exit(-4);
     } else if (s->pc == BOOT_BASE_ADDR && boot_ram) {
-        fprintf(dromajo_stderr, "NOTE: using the default majordomo ROM\n");
+        fprintf(majordomo_stderr, "NOTE: using the default majordomo ROM\n");
         serialize_memory(boot_ram->phys_mem, boot_ram->size, f_name);
     } else {
-        fprintf(dromajo_stderr, "ERROR: unexpected PC address 0x%llx\n", (long long)s->pc);
+        fprintf(majordomo_stderr, "ERROR: unexpected PC address 0x%llx\n", (long long)s->pc);
         exit(-4);
     }
 }

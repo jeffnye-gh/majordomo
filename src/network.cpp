@@ -111,7 +111,7 @@ EthernetDevice *tun_open(const char *ifname) {
 
     fd = open("/dev/net/tun", O_RDWR);
     if (fd < 0) {
-        fprintf(dromajo_stderr, "Error: could not open /dev/net/tun\n");
+        fprintf(majordomo_stderr, "Error: could not open /dev/net/tun\n");
         return NULL;
     }
     memset(&ifr, 0, sizeof(ifr));
@@ -119,7 +119,7 @@ EthernetDevice *tun_open(const char *ifname) {
     pstrcpy(ifr.ifr_name, sizeof(ifr.ifr_name), ifname);
     ret = ioctl(fd, TUNSETIFF, (void *)&ifr);
     if (ret != 0) {
-        fprintf(dromajo_stderr, "Error: could not configure /dev/net/tun\n");
+        fprintf(majordomo_stderr, "Error: could not configure /dev/net/tun\n");
         close(fd);
         return NULL;
     }
@@ -189,7 +189,7 @@ EthernetDevice *slirp_open(void) {
     int             restricted = 0;
 
     if (slirp_state) {
-        fprintf(dromajo_stderr, "Only a single slirp instance is allowed\n");
+        fprintf(majordomo_stderr, "Only a single slirp instance is allowed\n");
         return NULL;
     }
     net = mallocz(sizeof(*net));

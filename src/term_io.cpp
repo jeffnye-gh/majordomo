@@ -40,7 +40,7 @@
 #include "term_io.h"
 #include <termios.h>
 
-extern FILE *dromajo_stderr;
+extern FILE *majordomo_stderr;
 
 static struct termios oldtty;
 static int            old_fd0_flags;
@@ -101,9 +101,9 @@ int console_read(void *opaque, uint8_t *buf, int len)
         if (s->console_esc_state) {
             s->console_esc_state = 0;
             switch (ch) {
-                case 'x': fprintf(dromajo_stderr, "Terminated\n"); exit(0);
+                case 'x': fprintf(majordomo_stderr, "Terminated\n"); exit(0);
                 case 'h':
-                    fprintf(dromajo_stderr,
+                    fprintf(majordomo_stderr,
                             "\n"
                             "C-b h   print this help\n"
                             "C-b x   exit emulator\n"

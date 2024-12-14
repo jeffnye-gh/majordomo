@@ -1,5 +1,5 @@
 /*
- * Dromajo
+ * Majordomo - previously Dromajo
  *
  * Copyright (c) 2016 Fabrice Bellard
  * Copyright (C) 2017,2018,2019, Esperanto Technologies Inc.

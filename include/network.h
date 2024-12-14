@@ -49,7 +49,7 @@
 #define MAX_SLEEP_TIME 10 /* in ms */
 #endif
 
-extern FILE* dromajo_stderr;
+extern FILE* majordomo_stderr;
 
 #if !defined(__APPLE__)
 typedef struct {

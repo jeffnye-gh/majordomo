@@ -349,20 +349,20 @@ int dromajo_cosim_step(dromajo_cosim_state_t *state, int hartid, uint64_t dut_pc
             bool rl = (dut_insn >> 25) & 1;
             bool aq = (dut_insn >> 26) & 1;
             if (rl || aq) {
-                fprintf(dromajo_stderr, "FIXME: implement aq/rl in goldmem\n");
+                fprintf(majordomo_stderr, "FIXME: implement aq/rl in goldmem\n");
             }
 
             if (func5 == 0x02) {
-                fprintf(dromajo_stderr, "FIXME: implement ll in goldmem\n");
+                fprintf(majordomo_stderr, "FIXME: implement ll in goldmem\n");
                 exit(-3);
             } else if (func5 == 3) {
-                fprintf(dromajo_stderr, "FIXME: implement sc in goldmem\n");
+                fprintf(majordomo_stderr, "FIXME: implement sc in goldmem\n");
                 exit(-3);
             } else {  // all the other amoadd/amooand/... ops
                 check_inorder_amo(hartid, paddr, sz, s->last_data_value, dut_wdata, io_map);
             }
         } else {
-            fprintf(dromajo_stderr, "FIXME: unknown opcode with goldmem\n");
+            fprintf(majordomo_stderr, "FIXME: unknown opcode with goldmem\n");
             exit(-3);
         }
     } else if (do_clw || do_cld || do_clwsp || do_cldsp) {

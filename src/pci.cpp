@@ -168,7 +168,7 @@ static uint32_t pci_device_config_read(PCIDevice *d, uint32_t addr, int size_log
         default: abort();
     }
 #ifdef DEBUG_CONFIG
-    fprintf(dromajo_stdout, "pci_config_read: dev=%s addr=0x%02x val=0x%x s=%d\n", d->name, addr, val, 1 << size_log2);
+    fprintf(majordomo_stdout, "pci_config_read: dev=%s addr=0x%02x val=0x%x s=%d\n", d->name, addr, val, 1 << size_log2);
 #endif
     return val;
 }

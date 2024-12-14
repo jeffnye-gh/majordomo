@@ -43,8 +43,8 @@ int main(int argc, char *argv[]) {
     bool  cosim     = false;
     int   exit_code = EXIT_SUCCESS;
 
-    dromajo_stdout = stdout;
-    dromajo_stderr = stderr;
+    majordomo_stdout = stdout;
+    majordomo_stderr = stderr;
 
     if (argc < 3)
         usage(progname);
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
 
         switch (got) {
             case 4:
-                fprintf(dromajo_stdout,
+                fprintf(majordomo_stdout,
                         "%d %d %016" PRIx64 " %08x                           DASM(%08x)\n",
                         hartid,
                         priv,
@@ -117,14 +117,14 @@ int main(int argc, char *argv[]) {
                              &exception,
                              &tval);
                 if (got != 6) {
-                    fprintf(dromajo_stderr, "%s:%d: expected exception, coult not parse %s\n", trace_name, lineno, buf);
+                    fprintf(majordomo_stderr, "%s:%d: expected exception, coult not parse %s\n", trace_name, lineno, buf);
                     goto fail;
                 }
 
                 break;
 
             case 7:
-                fprintf(dromajo_stdout,
+                fprintf(majordomo_stdout,
                         "%d %d %016" PRIx64 " %08x [x%-2d <- %016" PRIx64 "] DASM(%08x)\n",
                         hartid,
                         priv,
@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
                         insn);
                 break;
 
-            default: fprintf(dromajo_stderr, "%s:%d: couldn't parse %s\n", trace_name, lineno, buf); goto fail;
+            default: fprintf(majordomo_stderr, "%s:%d: couldn't parse %s\n", trace_name, lineno, buf); goto fail;
 
             case 0:
             case -1: continue;
@@ -146,12 +146,12 @@ int main(int argc, char *argv[]) {
 
         if (exception && (exception < 8 || exception > 11)) {  // do not skip ECALLS
             dromajo_cosim_raise_trap(s, hartid, exception);
-            fprintf(dromajo_stdout, "exception %d with tval %08" PRIx64 "\n", exception, tval);
+            fprintf(majordomo_stdout, "exception %d with tval %08" PRIx64 "\n", exception, tval);
             continue;
         }
         int r = dromajo_cosim_step(s, hartid, insn_addr, insn, wdata, 0, true);
         if (r) {
-            fprintf(dromajo_stdout, "Exited with %08x\n", r);
+            fprintf(majordomo_stdout, "Exited with %08x\n", r);
             goto fail;
         }
     }
@@ -161,12 +161,12 @@ done:
         dromajo_cosim_fini(s);
 
     if (exit_code == EXIT_SUCCESS)
-        fprintf(dromajo_stdout, "\nSUCCESS, PASSED, GOOD!\n");
+        fprintf(majordomo_stdout, "\nSUCCESS, PASSED, GOOD!\n");
     else
-        fprintf(dromajo_stdout, "\nFAIL!\n");
+        fprintf(majordomo_stdout, "\nFAIL!\n");
 
-    if (dromajo_stdout != stdout)
-        fclose(dromajo_stdout);
+    if (majordomo_stdout != stdout)
+        fclose(majordomo_stdout);
 
     exit(exit_code);
 

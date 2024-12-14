@@ -191,7 +191,7 @@ int copy_kernel(RISCVMachine *s, uint8_t *fw_buf, size_t fw_buf_len, const uint8
         load_elf_image(s, fw_buf, fw_buf_len);
         uint64_t fw_entrypoint = elf64_get_entrypoint(fw_buf);
         if (!s->bootrom_loaded && fw_entrypoint != s->ram_base_addr) {
-            fprintf(dromajo_stderr,
+            fprintf(majordomo_stderr,
                     "majordomo currently requires a 0x%" PRIx64 " starting address, image assumes 0x%0" PRIx64 "\n",
                     s->ram_base_addr,
                     fw_entrypoint);

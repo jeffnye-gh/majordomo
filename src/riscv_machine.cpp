@@ -114,9 +114,9 @@ RISCVMachine *virt_machine_main(int argc, char **argv) {
     bool        show_enabled_extensions    = false;
     const char *march_string               = "rv64gc";
 
-    dromajo_stdout    = stdout;
-    dromajo_stderr    = stderr;
-    dromajo_trace     = stderr;
+    majordomo_stdout    = stdout;
+    majordomo_stderr    = stderr;
+    majordomo_trace     = stderr;
 
     optind = 0;
 
@@ -475,14 +475,14 @@ RISCVMachine *virt_machine_main(int argc, char **argv) {
 #endif
         {
 #if defined(__APPLE__)
-            fprintf(dromajo_stderr, "Filesystem access not supported yet\n");
+            fprintf(majordomo_stderr, "Filesystem access not supported yet\n");
             exit(1);
 #else
             char *fname;
             fname = get_file_path(p->cfg_filename, path);
             fs    = fs_disk_init(fname);
             if (!fs) {
-                fprintf(dromajo_stderr, "%s: must be a directory\n", fname);
+                fprintf(majordomo_stderr, "%s: must be a directory\n", fname);
                 exit(1);
             }
             free(fname);
@@ -507,13 +507,13 @@ RISCVMachine *virt_machine_main(int argc, char **argv) {
         } else
 #endif
         {
-            fprintf(dromajo_stderr, "Unsupported network driver '%s'\n",
+            fprintf(majordomo_stderr, "Unsupported network driver '%s'\n",
                     p->tab_eth[i].driver);
             exit(1);
         }
     }
 
-    p->console       = console_init(allow_ctrlc, stdin, dromajo_stdout);
+    p->console       = console_init(allow_ctrlc, stdin, majordomo_stdout);
     p->dump_memories = dump_memories;
 
     // Setup bootrom params
@@ -632,9 +632,9 @@ RISCVMachine *virt_machine_main(int argc, char **argv) {
 
     if(exe_trace_file_name) {
 
-      dromajo_trace = fopen(exe_trace_file_name,"w");
+      majordomo_trace = fopen(exe_trace_file_name,"w");
 
-      if(dromajo_trace == NULL) {
+      if(majordomo_trace == NULL) {
             fprintf(stderr, "Could not open execution log file '%s'\n",
                     exe_trace_file_name);
       }

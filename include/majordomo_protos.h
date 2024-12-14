@@ -43,9 +43,9 @@
 #include "riscv_machine.h"
 #include <cstdarg>
 
-extern FILE *dromajo_trace;
-extern FILE *dromajo_stdout;
-extern FILE *dromajo_stderr;
+extern FILE *majordomo_trace;
+extern FILE *majordomo_stdout;
+extern FILE *majordomo_stderr;
 extern void execution_trace(RISCVMachine *m,int hartid,uint32_t insn_raw);
 //extern void riscv_flush_tlb_write_range(void *opaque, uint8_t *ram_addr, size_t ram_size);
 extern void dromajo_default_debug_log(int hartid, const char *fmt, ...);

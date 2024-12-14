@@ -113,7 +113,7 @@ static PhysMemoryRange *default_register_ram(PhysMemoryMap *s, uint64_t addr, ui
 
     pr->phys_mem = (uint8_t *)mallocz(size);
     if (!pr->phys_mem) {
-        fprintf(dromajo_stderr, "Could not allocate VM memory\n");
+        fprintf(majordomo_stderr, "Could not allocate VM memory\n");
         exit(1);
     }
 

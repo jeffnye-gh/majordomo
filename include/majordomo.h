@@ -20,7 +20,7 @@
 
 #include "riscv_machine.h"
 
-extern FILE *dromajo_stdout;
-extern FILE *dromajo_stderr;
+extern FILE *majordomo_stdout;
+extern FILE *majordomo_stderr;
 
 #endif

@@ -179,5 +179,5 @@ extern void setIsaConfigFlags     (const std::string& input, IsaConfigFlags&);
 extern void printIsaConfigFlags   (const IsaConfigFlags&,bool verbose);
 extern bool parse_isa_string      (const char *march,IsaConfigFlags&);
 extern bool validateInitialSegment(const std::string&,IsaConfigFlags&);
-extern FILE *dromajo_stdout;
-extern FILE *dromajo_stderr;
+extern FILE *majordomo_stdout;
+extern FILE *majordomo_stderr;

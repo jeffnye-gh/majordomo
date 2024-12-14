@@ -106,17 +106,17 @@ void printIsaConfigFlags(const IsaConfigFlags& flags,bool verbose) {
     for (const auto& [key, flagPtr] : extensionMap) {
         if(flags.*flagPtr) nothing_enabled = false;
         if (verbose) {
-            fprintf(dromajo_stderr, "  - %s: %s\n", key.c_str(),
+            fprintf(majordomo_stderr, "  - %s: %s\n", key.c_str(),
                    (flags.*flagPtr ? "enabled" : "disabled"));
         } else if (flags.*flagPtr) {
-            fprintf(dromajo_stderr, "  - %s: enabled\n", key.c_str());
+            fprintf(majordomo_stderr, "  - %s: enabled\n", key.c_str());
         }
     }
 
     // This can happen if the command line over loads the default with
     // something like rv64 instead of rv64i, etc
     if(nothing_enabled) {
-      fprintf(dromajo_stderr, "  - No extensions are enabled\n");
+      fprintf(majordomo_stderr, "  - No extensions are enabled\n");
     }
 }
 // -----------------------------------------------------------------------
@@ -143,7 +143,7 @@ bool validateInitialSegment(const std::string& segment,IsaConfigFlags &flags)
         flags.rv128 = true;
         base = "rv128";
     } else {
-        fprintf(dromajo_stderr,"Invalid base prefix. Must start "
+        fprintf(majordomo_stderr,"Invalid base prefix. Must start "
                                "with 'rv32', 'rv64', or 'rv128'.\n");
         return false;
     }
@@ -171,7 +171,7 @@ bool validateInitialSegment(const std::string& segment,IsaConfigFlags &flags)
               flags.d = true;
             }
         } else {
-            fprintf(dromajo_stderr,
+            fprintf(majordomo_stderr,
                     "Invalid character in the initial segment: %c\n",ch);
             return false;
         }

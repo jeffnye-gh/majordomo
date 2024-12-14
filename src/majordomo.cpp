@@ -193,7 +193,7 @@ static uint64_t *execution_progress_meassure;
 
 static void sigintr_handler(int dummy) {
     double t = get_current_time_in_seconds();
-    fprintf(dromajo_stderr, "Simulation speed: %5.2f MIPS (single-core)\n",
+    fprintf(majordomo_stderr, "Simulation speed: %5.2f MIPS (single-core)\n",
             1e-6 * *execution_progress_meassure / (t - execution_start_ts));
     exit(1);
 }
@@ -218,11 +218,11 @@ int main(int argc, char **argv) {
              simpoint_bb_file = fopen(m->common.simpoint_bb_file, "w");
         }
         else {
-             simpoint_bb_file = fopen("dromajo_simpoint.bb", "w");
+             simpoint_bb_file = fopen("majordomo_simpoint.bb", "w");
         }
         if (simpoint_bb_file == nullptr) {
-            fprintf(dromajo_stderr, "\nerror: could not "
-                    "open dromajo_simpoint.bb for dumping trace\n");
+            fprintf(majordomo_stderr, "\nerror: could not "
+                    "open majordomo_simpoint.bb for dumping trace\n");
             exit(-3);
         }
     }
@@ -252,13 +252,13 @@ int main(int argc, char **argv) {
         inst_heart_beat += n_cycles;
         total_inst_count += n_cycles;
         if(inst_heart_beat > m->common.heartbeat){
-            fprintf(dromajo_stderr, "HeartBeat : %li / %li \n",
+            fprintf(majordomo_stderr, "HeartBeat : %li / %li \n",
                     inst_heart_beat, total_inst_count);
             inst_heart_beat = 0;
         }
 
         if((cpu->satp) != prev_prog_asid &&  m->common.stf_insn_tracing_active){
-            fprintf(dromajo_stderr, "\n\t -- ASID ::  %lx --> %lx @%li \n", 
+            fprintf(majordomo_stderr, "\n\t -- ASID ::  %lx --> %lx @%li \n", 
                     prev_prog_asid, (cpu->satp), total_inst_count);
         }
 
@@ -284,7 +284,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < m->ncpus; ++i) {
         int benchmark_exit_code = riscv_benchmark_exit_code(m->cpu_state[i]);
         if (benchmark_exit_code != 0) {
-            fprintf(dromajo_stderr, "\nBenchmark exited with code: %i \n",
+            fprintf(majordomo_stderr, "\nBenchmark exited with code: %i \n",
                     benchmark_exit_code);
             return 1;
         }
@@ -295,11 +295,11 @@ int main(int argc, char **argv) {
     //    stf_trace_close();
     //}
 
-    fprintf(dromajo_stderr, "\nInstruction Count: %li \n", total_inst_count);
-    fprintf(dromajo_stderr, "Simulation speed: %5.2f MIPS (single-core)\n",
+    fprintf(majordomo_stderr, "\nInstruction Count: %li \n", total_inst_count);
+    fprintf(majordomo_stderr, "Simulation speed: %5.2f MIPS (single-core)\n",
             1e-6 * *execution_progress_meassure / (t - execution_start_ts));
 
-    fprintf(dromajo_stderr, "\nPower off.\n");
+    fprintf(majordomo_stderr, "\nPower off.\n");
 
     virt_machine_end(m);
 #endif
