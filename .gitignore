@@ -10,6 +10,9 @@ build
 ._.DS_Store
 .DS_Store
 
+tests/riscv-tests/configure
+tests/riscv-tests/configure.ac
+
 tests/isa_test_suite/benchmark_asid
 tests/isa_test_suite/total_num_instructions
 
