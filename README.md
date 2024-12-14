@@ -104,7 +104,15 @@ make -j$(nproc) md_regress
 
 ### Regression output
 Regression results will look similar to this, execution times are dependent on 
-host compiler optimizations.
+host compiler optimizations. 
+
+riscv\_isa\_tests can take as long a minute or more to run. 
+
+When built and run under the sparta miniconda environment this has been
+seen to reduce runtime to <10 secs.
+
+See the minconda/sparta environment instructions here:
+https://github.com/sparcians/map
 
 ```
 Running tests...
