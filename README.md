@@ -1,21 +1,12 @@
-
 # Majordomo - RISC-V Golden Model
 
 NOTE: this is not suitable as a production golden model for RISC-V. See Caveats.
 
-This started as a fork of the Dromajo RISC-V golden model.
-The original repo is here: https://github.com/chipsalliance/dromajo.
-
-The fork has been removed.
-
-This source is derived from the Esperanto source which was
-in turn derived from Fabrice Bellard's RISCVEMU/TinyEMU.
-
-The original contents of the Esperanto README.md are found in
-doc/ESPERANTO_README.md.  Some of the original contents are also duplicated
-here.
+Majordomo started as a fork of the Dromajo RISC-V golden model. The fork has been removed. See Credits below.
 
 ## Prerequisites
+
+A cross compiler is required to run the regression and use the examples. Two environment variables must be set to use build environment.
 
 ### Cross compilers
 You must have cross compilers installed for linux and bare metal. At the time
@@ -54,7 +45,9 @@ done
 
 ### Environment variables
 
-cd to the top of your install directory 
+The RISCV and MAJORDOMO_TOP environment variables must be set.
+
+cd to the top of your majordomo install directory 
 
 ```
 cd majordomo
@@ -113,13 +106,9 @@ Test project /home/jeff/Development/jeffnye-gh/tmp/majordomo/build/tests
 
 ```
 
-## Build artifacts
-```
-TODO: description
-```
-
 ## Usage
 
+### Basic command line usage
 From the build directory - boot linux
 ```
 ./majordomo --ctrlc --march=rv64gc ../scripts/md.boot.cfg
@@ -127,42 +116,43 @@ From the build directory - boot linux
 
 From the build directory - run an elf file with tracing or with STF creation
 ```
-./majordomo --march=rv64gc ../scripts/bmi_mm.bare.riscv
-./majordomo --stf_trace trace.zstf --stf_priv_modes USHM ../scripts/bmi_mm.bare.riscv
+./majordomo --ctrlc --march=rv64gc --stf_trace trace.zstf --stf_priv_modes USHM ../scripts/main.elf
 ```
 
 From the build directory - run one of the  directed tests
 ```
-./majordomo --march=rv64gc_zfa ../tests/directed/bin/zfa/rv64ud-p-fleq_d
+./majordomo --ctrlc --march=rv64gc_zfa ../tests/directed/bin/zfa/rv64ud-p-fleq_d
 ```
 
-## STF trace options
+### How to boot linux
 
-Command line options are added to control STF trace generation.
+Build majordomo as usual. From that build directory executing this command will boot a pre-build linux image.
 
 ```
-    --stf_trace <file> Dump an STF trace to the given file
-                  Use .zstf as the file extension for compressed trace
-                  output. Use .stf for uncompressed output
-    --stf_exit_on_stop_opc Terminate the simulation after 
-                  detecting a STOP_TRACE opcode. Using this
-                  switch will disable non-contiguous region
-                  tracing. The first STOP_TRACE opcode will 
-                  terminate the simulator.
-    --stf_memrecord_size_in_bits write memory access size in bits
-                   instead of bytes
-    --stf_trace_register_state include register state in the STF
-                   (default false)
-    --stf_disable_memory_records Do not add memory records to 
-                   STF trace. By default memory records are 
-                   always traced.
-                   (default false)
-    --stf_priv_modes <USHM|USH|US|U> Specify which privilege 
-                  modes to include for STF trace generation
-    --stf_force_zero_sha Emit 0 for all SHA's in the STF header. This is a 
-                  debug option. Also clears the dromajo version placed in
-                  the STF header.
+<cd build directory>
+./majordomo --ctrlc --march=rv64gc ../linux/md.boot.cfg
 ```
+
+The user is root, the password is root
+
+### How to create an STF trace from a prebuilt elf
+
+Build majordomo as usual. From that build directory executing this command will create an STF trace of the rvt_mm.bare.elf. (matrix multiply)
+
+```
+<cd build directory>
+./majordomo --march=rv64gc --stf_trace trace.zstf --stf_priv_modes USHM ../examples/rvt_mm.bare.elf
+```
+The trace file will be trace.zstf
+
+# Examples
+
+The examples directory contains examples of how to build, run and trace baremetal applications. There is a quick sort example derived from riscv-tests/benchmarks. 
+
+There are also 3 builds of the dhrystone benchmark. These builds conform to the 3 accepted optimization levels used for compiling dhrystone.
+
+The examples directory includes boot strap source and other ancillary files for creating bare metal applications that will run on majordomo. See the Makefile and the dhrystone make file dhry.mk.
+
 
 ## Enabling RISC-V extensions
 ```
@@ -185,4 +175,24 @@ To run regression
 make -j regress
 ```
 
-Jeff Nye 2024 - 
+## Credits & License
+
+This work extends the original Dromajo model provided by Esperanto and extended by Condor Computing. The Esperanto/Condor work was in turn derived from 
+RISCVEMU/TinyEMU.
+
+The original TinyEMU source was released under the MIT license.
+
+The Dromajo source was release under the Apache 2.0 license.
+The Condor modifications were also released under the Apache 2.0 license.
+
+Files that have been modified for Majordomo retain the original author information and license.  Majordomo carries forward the Apache 2.0 license.  New files are (c) Jeff Nye.
+
+The Dromajo URL is: https://github.com/chipsalliance/dromajo
+
+The TinyEMU URL is: https://bellard.org/tinyemu
+
+There are various URL for RISCVEMU, this is one: https://github.com/sysprog21/riscv-emu
+
+The original contents of the Esperanto README.md are found in
+doc/ESPERANTO_README.md.  
+
