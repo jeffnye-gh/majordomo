@@ -1,8 +1,11 @@
 # Majordomo - RISC-V Golden Model
 
-NOTE: this is not suitable as a production golden model for RISC-V. See Caveats.
+NOTE: this is not suitable as a production golden model for RISC-V. 
+
+NOTE: See Caveats.
 
 Majordomo started as a fork of the Dromajo RISC-V golden model. The fork has been removed. See Credits below.
+
 
 ## Prerequisites
 
@@ -60,7 +63,7 @@ Export RISCV to your cross compiler directory, example:
 export RISCV=/usr/local/riscv-embecosm-embedded-ubuntu2204-20240407
 ```
 
-## Caveats
+## Caveats/Known issues
 
 This version has incomplete/limited support for configurations beyond 
 but RV64 XLEN=64 FLEN=64.
@@ -71,6 +74,9 @@ per line, lines beginning with x are commented out.
 
 As extension support is added tests from the riscv-isa-tests suite are enabled.
 
+Instruction counts reported to the console are not correct.
+
+Simulation speed results are not correct.
 
 ## Clone, build and run regression
 

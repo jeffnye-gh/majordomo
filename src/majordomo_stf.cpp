@@ -23,13 +23,29 @@
 #include "majordomo_stf.h"
 stf::STFWriter stf_writer;
 
-#define STF_TRACE_DEBUG(s)	\
-    if ((s)->machine->common.stf_insn_tracing_active || (s)->machine->common.stf_macro_tracing_active) {\
-        if((s)->machine->common.stf_num_traced % 1000000 == 0){\
-            fprintf(majordomo_stderr, "\tSATP: %lx  ASID: %lx>>>>> Traced Instr Count : %ld / exe:%ld\n",\
-                (s)->satp, ((s)->satp >> 4) & 0xFFFF, (s)->machine->common.stf_num_traced, (s)->machine->common.num_executed);\
-        }\
+//FIXME: consider making this a cmdline switch, this is easier for
+//the limited usage at the moment.
+#define STF_TRACE_DEBUG_EN 0
+
+#if STF_TRACE_DEBUG_EN == 1
+void STF_TRACE_DEBUG(RISCVCPUState *s)
+{
+    if (   s->machine->common.stf_insn_tracing_active
+        || s->machine->common.stf_macro_tracing_active)
+    {
+        if(s->machine->common.stf_num_traced % 1000000 == 0)
+        {
+            fprintf(majordomo_stderr,
+            "\tSATP: %lx  ASID: %lx>>>>> Traced Instr Count : %ld / exe:%ld\n",
+            s->satp, ((s)->satp >> 4) & 0xFFFF,
+            s->machine->common.stf_num_traced,
+            s->machine->common.num_executed);
+        }
     }
+}
+#else
+void STF_TRACE_DEBUG(RISCVCPUState *s) {}
+#endif
 
 void stf_record_state(RISCVMachine * m, int hartid, uint64_t last_pc)
 {
@@ -72,11 +88,11 @@ bool stf_trace_trigger(RISCVCPUState *s,target_ulong PC,uint32_t insn)
     bool stop = s->machine->common.stf_macro_tracing_active && s->machine->common.stf_is_stop_opc;
 
     if (start) {
-        fprintf(majordomo_stderr, "@@@ MAJORDOMO: START OPC \n");
+        fprintf(majordomo_stderr, "-I: trace start opcode detected\n");
         s->machine->common.stf_macro_tracing_active = true;
         stf_trace_open(s, PC);
     } else if (stop) {
-        fprintf(majordomo_stderr, "@@@ MAJORDOMO: STOP OPC \n");
+        fprintf(majordomo_stderr, "-I: trace stop opcode detected \n");
         s->machine->common.stf_macro_tracing_active = false;
         stf_trace_close(s, PC);
         if (s->machine->common.stf_exit_on_stop_opc) {
@@ -94,8 +110,11 @@ void stf_trace_open(RISCVCPUState *s, target_ulong PC)
 {
     int hartid = s->mhartid;
 
-    fprintf(majordomo_stderr, ">>> MAJORDOMO: Tracing Started at 0x%lx at inst num %ld\n",
-                             PC, s->machine->common.num_executed);
+    if(s->machine->common.stf_insn_num_tracing) {
+      fprintf(majordomo_stderr, "-I: tracing Started at 0x%lx,instr # %ld\n",
+                               PC, s->machine->common.num_executed);
+    }
+
     s->machine->common.stf_trace_open = true;
     s->machine->common.stf_prog_asid = (s->satp >> 4) & 0xFFFF;
 
@@ -106,7 +125,7 @@ void stf_trace_open(RISCVCPUState *s, target_ulong PC)
         uint32_t vMajor,vMinor,vPatch;
         if(s->machine->common.stf_force_zero_sha) {
           drom_sha   = "MAJORDOMO SHA:0";
-          stflib_sha = "STF_LIB   SHA:0";
+          stflib_sha = "STF_LIB SHA:0";
           vMajor = 0;
           vMinor = 0;
           vPatch = 0;
@@ -144,10 +163,18 @@ void stf_trace_close(RISCVCPUState *s, target_ulong PC)
         s->machine->common.stf_macro_tracing_active = false;
         s->machine->common.stf_insn_tracing_active = false;
 
-        fprintf(majordomo_stderr, ">>> MAJORDOMO: Tracing Stopped at 0x%lx at inst num %ld\n",
-                                PC, s->machine->common.num_executed);
-        fprintf(majordomo_stderr, "\n\t>>> MAJORDOMO: Traced %ld insts in %ld executed instructions\n",
-                                s->machine->common.stf_num_traced, s->machine->common.num_executed);
+
+        if(s->machine->common.stf_insn_num_tracing) {
+            fprintf(majordomo_stderr,
+                "-I: tracing stopped at 0x%lx, instr #  %ld\n",
+                PC, s->machine->common.num_executed);
+        }
+
+        fprintf(majordomo_stderr,
+            "-I: traced %ld of %ld executed instructions\n",
+            s->machine->common.stf_num_traced, s->machine->common.num_executed);
+
+        stf_writer.flush();
         stf_writer.close();
     }
 }
@@ -294,17 +321,17 @@ bool stf_trace_trigger_insn(RISCVCPUState *s, target_ulong PC)
     }
 
     bool start = !s->machine->common.stf_insn_tracing_active &&
-                 s->machine->common.num_executed == s->machine->common.stf_insn_start;
+         s->machine->common.num_executed == s->machine->common.stf_insn_start;
 
     bool stop = s->machine->common.stf_insn_tracing_active &&
-                s->machine->common.stf_num_traced == s->machine->common.stf_insn_length;
+         s->machine->common.stf_num_traced == s->machine->common.stf_insn_length;
 
     if (start) {
-        fprintf(majordomo_stderr, "@@@ MAJORDOMO: START INSTRUCTION NUMBER \n");
+        fprintf(majordomo_stderr, "-I: trace start instr count detected\n");
         s->machine->common.stf_insn_tracing_active = true;
         stf_trace_open(s, PC);
     } else if (stop) {
-         fprintf(majordomo_stderr, "@@@ MAJORDOMO: STOP INSTRUCTION NUMBER \n");
+        fprintf(majordomo_stderr, "-I: trace stop instr count detected\n");
         s->machine->common.stf_insn_tracing_active = false;
         stf_trace_close(s, PC);
         if (s->machine->common.stf_exit_on_stop_opc) {

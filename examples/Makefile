@@ -59,7 +59,8 @@ all:
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 sim:
-	$(MJD) $(MFLAGS) --stf_trace ./traces/$(T).zstf ./bin/$(E).elf
+	@echo "executing $(T)"
+	@$(MJD) $(MFLAGS) --stf_trace ./traces/$(T).zstf ./bin/$(E).elf
 	
 clean:
 	-rm -rf bin/* obj/* traces/*

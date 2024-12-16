@@ -257,12 +257,12 @@ int main(int argc, char **argv) {
         }
 
         if((cpu->satp) != prev_prog_asid){
-            fprintf(majordomo_stderr, "\n\t -- ASID ::  %lx --> %lx @%li \n", prev_prog_asid, (cpu->satp), total_inst_count);
+            fprintf(majordomo_stderr, "\n\t -- ASID ::  %lx --> %lx @%li \n",
+                    prev_prog_asid, (cpu->satp), total_inst_count);
         }
 
         if (simpoint_roi && m->common.simpoint_en_bbv) {
-            if (!simpoint_step(m, 0))
-                break;
+            if (!simpoint_step(m, 0)) break;
         }
 
     } while (keep_going && !m->common.stf_has_exit_pending);
@@ -280,21 +280,23 @@ int main(int argc, char **argv) {
     for (int i = 0; i < m->ncpus; ++i) {
         int benchmark_exit_code = riscv_benchmark_exit_code(m->cpu_state[i]);
         if (benchmark_exit_code != 0) {
-            fprintf(majordomo_stderr, "\nBenchmark exited with code: %i \n",
+            fprintf(majordomo_stderr, "-I: benchmark exited with code: %i \n",
                     benchmark_exit_code);
             return 1;
         }
     }
 
+    //TODO: there was an issue with partial compressed buffers in stf_lib
+    //      solved with the flush. 
     //if(stf_writer) {
     //    stf_writer.flush();
     //    stf_trace_close();
     //}
 
-    fprintf(majordomo_stderr, "Instruction Count: %li \n", total_inst_count);
-    fprintf(majordomo_stderr, "Simulation speed: %5.2f MIPS (single-core)\n",
+    fprintf(majordomo_stderr, "-I: instruction Count: %li \n", total_inst_count);
+    fprintf(majordomo_stderr, "-I: simulation speed: %5.2f MIPS (single-core)\n",
             1e-6 * *execution_progress_meassure / (t - execution_start_ts));
-    fprintf(majordomo_stderr, "Power off.\n");
+    fprintf(majordomo_stderr, "-I: power off.\n");
 
     virt_machine_end(m);
 #endif

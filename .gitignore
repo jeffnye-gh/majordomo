@@ -33,3 +33,6 @@ tests/stf_load_store/traces
 tests/directed/logs
 tests/isa_test_suite/riscv-test-files
 
+examples/benchmark_asid
+examples/total_num_instructions
+examples/traces
