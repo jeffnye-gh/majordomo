@@ -76,9 +76,7 @@ struct FBDevice {
 
 #define VM_CONFIG_VERSION 1
 
-#ifdef SIMPOINT_BB
 extern int simpoint_roi;
-#endif
 
 typedef enum {
     VM_FILE_BIOS,
@@ -114,7 +112,6 @@ typedef struct {
     EthernetDevice *net;
 } VMEthEntry;
 
-#ifdef SIMPOINT_BB
 #include <vector>
 struct Simpoint {
     Simpoint(uint64_t i, int j) : start(i), id(j) {}
@@ -123,7 +120,6 @@ struct Simpoint {
     uint64_t start;
     int      id;
 };
-#endif
 
 typedef struct {
     char *           cfg_filename;
@@ -193,10 +189,8 @@ typedef struct VirtMachine {
     /* graphics */
     FBDevice *fb_dev;
 
-#ifdef SIMPOINT_BB
     uint32_t              simpoint_next;
     std::vector<Simpoint> simpoints;
-#endif
 
     // Params
     char*       snapshot_load_name = nullptr;

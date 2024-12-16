@@ -83,9 +83,10 @@ bool stf_trace_trigger(RISCVCPUState *s,target_ulong PC,uint32_t insn)
            s->terminate_simulation = 1;
            s->machine->common.stf_has_exit_pending = true;
         }
+    } else {
+      STF_TRACE_DEBUG(s);
     }
 
-    STF_TRACE_DEBUG(s);
     return s->machine->common.stf_macro_tracing_active;
 }
 
@@ -93,8 +94,8 @@ void stf_trace_open(RISCVCPUState *s, target_ulong PC)
 {
     int hartid = s->mhartid;
 
-    fprintf(majordomo_stderr, ">>> MAJORDOMO: Tracing Started at 0x%lx\n", PC);
-
+    fprintf(majordomo_stderr, ">>> MAJORDOMO: Tracing Started at 0x%lx at inst num %ld\n",
+                             PC, s->machine->common.num_executed);
     s->machine->common.stf_trace_open = true;
     s->machine->common.stf_prog_asid = (s->satp >> 4) & 0xFFFF;
 
@@ -143,7 +144,7 @@ void stf_trace_close(RISCVCPUState *s, target_ulong PC)
         s->machine->common.stf_macro_tracing_active = false;
         s->machine->common.stf_insn_tracing_active = false;
 
-        fprintf(majordomo_stderr, "\n\t>>> MAJORDOMO: Tracing Stopped at 0x%lx @INST_num %ld\n",
+        fprintf(majordomo_stderr, ">>> MAJORDOMO: Tracing Stopped at 0x%lx at inst num %ld\n",
                                 PC, s->machine->common.num_executed);
         fprintf(majordomo_stderr, "\n\t>>> MAJORDOMO: Traced %ld insts in %ld executed instructions\n",
                                 s->machine->common.stf_num_traced, s->machine->common.num_executed);

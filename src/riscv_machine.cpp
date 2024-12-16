@@ -577,7 +577,6 @@ RISCVMachine *virt_machine_main(int argc, char **argv) {
     }
 
     if (simpoint_file) {
-#ifdef SIMPOINT_BB
         FILE *file = fopen(simpoint_file, "r");
         if (file == 0) {
             fprintf(stderr, "could not open simpoint file %s\n",
@@ -607,11 +606,6 @@ RISCVMachine *virt_machine_main(int argc, char **argv) {
             exit(1);
         }
         s->common.simpoint_next = 0;
-#else
-        fprintf(stderr, "simpoint flag requires to recompile "
-                        "with SIMPOINT_BB\n");
-        exit(1);
-#endif
     }
 
     (void) march_string;

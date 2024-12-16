@@ -49,7 +49,6 @@ std::shared_ptr<Options> opts(Options::getInstance());
 IsaConfigFlags *IsaConfigFlags::instance = 0;
 std::shared_ptr<IsaConfigFlags> isa_flags(IsaConfigFlags::getInstance());
 
-#ifdef SIMPOINT_BB
 FILE *simpoint_bb_file = nullptr;
 int   simpoint_roi     = 0;  // start without ROI enabled
 
@@ -122,9 +121,8 @@ int simpoint_step(RISCVMachine *m, int hartid) {
 
     return 1;
 }
-#endif
 
-static int iterate_core(RISCVMachine *m, int hartid, int n_cycles) {
+static std::tuple<int, int> iterate_core(RISCVMachine *m, int hartid, int n_cycles) {
 
     RISCVCPUState *cpu = m->cpu_state[hartid];
 
@@ -168,7 +166,7 @@ static int iterate_core(RISCVMachine *m, int hartid, int n_cycles) {
 
     if (m->common.maxinsns <= 0)
         /* Succeed after N instructions without failure. */
-        return 0;
+        return {0, 0};
 
     int keep_going = virt_machine_run(m, hartid, n_cycles);
 
@@ -180,12 +178,12 @@ static int iterate_core(RISCVMachine *m, int hartid, int n_cycles) {
     }
 
     if (!en_trace && !in_interactive) {
-        return keep_going;
+        return {keep_going, n_cycles};
     }
 
     if(en_trace) { execution_trace(m,hartid,insn_raw); }
 
-    return keep_going;
+    return {keep_going, n_cycles};
 }
 
 static double execution_start_ts;
@@ -212,7 +210,6 @@ int main(int argc, char **argv) {
 
     RISCVMachine *m = virt_machine_main(argc, argv);
 
-    #ifdef SIMPOINT_BB
     if (m->common.simpoints.empty() && m->common.simpoint_en_bbv) {
         if (m->common.simpoint_bb_file != nullptr){
              simpoint_bb_file = fopen(m->common.simpoint_bb_file, "w");
@@ -226,13 +223,12 @@ int main(int argc, char **argv) {
             exit(-3);
         }
     }
-    #endif
 
     if (!m) return 1;
 
     RISCVCPUState *cpu = m->cpu_state[0];
 
-    int n_cycles = 10000;
+    int n_cycles_request = 10000;
     execution_start_ts = get_current_time_in_seconds();
     execution_progress_meassure = &m->cpu_state[0]->minstret;
     signal(SIGINT, sigintr_handler);
@@ -240,34 +236,34 @@ int main(int argc, char **argv) {
     uint64_t prev_prog_asid = 0;
     uint64_t inst_heart_beat = 0;
     uint64_t total_inst_count = 0;
-    int keep_going;
+    int keep_going = 0;
+    int n_cycles_actual = 0;
     do {
         prev_prog_asid = (cpu->satp);
 
         keep_going = 0;
+        n_cycles_actual = 0;
         for (int i = 0; i < m->ncpus; ++i) {
-            keep_going |= iterate_core(m, i, n_cycles);
+            const auto [keep_going_retval, n_cycles_actual_retval] = iterate_core(m, i, n_cycles_request);
+            keep_going |= keep_going_retval;
+            n_cycles_actual += n_cycles_actual_retval;
         }
 
-        inst_heart_beat += n_cycles;
-        total_inst_count += n_cycles;
+        inst_heart_beat += n_cycles_actual;
+        total_inst_count += n_cycles_actual;
         if(inst_heart_beat > m->common.heartbeat){
-            fprintf(majordomo_stderr, "HeartBeat : %li / %li \n",
-                    inst_heart_beat, total_inst_count);
+            fprintf(majordomo_stderr, "HeartBeat : %li / %li \n", inst_heart_beat, total_inst_count);
             inst_heart_beat = 0;
         }
 
-        if((cpu->satp) != prev_prog_asid &&  m->common.stf_insn_tracing_active){
-            fprintf(majordomo_stderr, "\n\t -- ASID ::  %lx --> %lx @%li \n", 
-                    prev_prog_asid, (cpu->satp), total_inst_count);
+        if((cpu->satp) != prev_prog_asid){
+            fprintf(majordomo_stderr, "\n\t -- ASID ::  %lx --> %lx @%li \n", prev_prog_asid, (cpu->satp), total_inst_count);
         }
 
-        #ifdef SIMPOINT_BB
         if (simpoint_roi && m->common.simpoint_en_bbv) {
             if (!simpoint_step(m, 0))
                 break;
         }
-        #endif
 
     } while (keep_going && !m->common.stf_has_exit_pending);
 
@@ -295,11 +291,10 @@ int main(int argc, char **argv) {
     //    stf_trace_close();
     //}
 
-    fprintf(majordomo_stderr, "\nInstruction Count: %li \n", total_inst_count);
+    fprintf(majordomo_stderr, "Instruction Count: %li \n", total_inst_count);
     fprintf(majordomo_stderr, "Simulation speed: %5.2f MIPS (single-core)\n",
             1e-6 * *execution_progress_meassure / (t - execution_start_ts));
-
-    fprintf(majordomo_stderr, "\nPower off.\n");
+    fprintf(majordomo_stderr, "Power off.\n");
 
     virt_machine_end(m);
 #endif

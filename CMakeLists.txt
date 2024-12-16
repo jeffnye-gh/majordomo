@@ -43,7 +43,6 @@ cmake_minimum_required(VERSION 3.1)
 set(CMAKE_CXX_STANDARD 20)
 project(majordomo)
 option(TRACEOS "TRACEOS" OFF)
-option(SIMPOINT "SIMPOINT" OFF)
 option(GOLDMEM "GOLDMEM" OFF)
 option(WARMUP "WARMUP" OFF)
 
@@ -121,12 +120,6 @@ if (TRACEOS)
     )
 endif ()
 
-if (SIMPOINT)
-    add_compile_options(
-            -DSIMPOINT_BB
-    )
-endif ()
-
 if (WARMUP)
   message(STATUS "Checkpoint with WARMUP is on (typically for simpoints, but any checkpoint can use it).")
     add_compile_options( -DLIVECACHE)
@@ -198,14 +191,7 @@ endif ()
 
 include_directories(include external ${CMAKE_CURRENT_BINARY_DIR})
 
-# -------------------------------------------------------------------
-# Change the name of the copied file if SIMPOINT option is enabled
-# -------------------------------------------------------------------
-if(SIMPOINT)
-    set(MAJORDOMO_NAME simpoint_majordomo)
-else()
-    set(MAJORDOMO_NAME majordomo)
-endif()
+set(MAJORDOMO_NAME majordomo)
 
 set(LOCAL_BIN_DIR ../bin)
 add_custom_command(TARGET majordomo POST_BUILD
@@ -213,6 +199,7 @@ add_custom_command(TARGET majordomo POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:majordomo>
                                      ${LOCAL_BIN_DIR}/${MAJORDOMO_NAME}
     COMMENT "Copying majordomo to ${LOCAL_BIN_DIR} as ${MAJORDOMO_NAME}")
+
 
 # -------------------------------------------------------------------
 # STF

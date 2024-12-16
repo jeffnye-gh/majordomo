@@ -1541,9 +1541,7 @@ static int csr_read(RISCVCPUState *s, uint32_t funct3,
         case CSR_PMPADDR(14):
         case CSR_PMPADDR(15): val = s->csr_pmpaddr[csr - CSR_PMPADDR(0)]; break;
 
-#ifdef SIMPOINT_BB
         case 0x8C2: val = 0; break;
-#endif
 
         default:
         invalid_csr:
@@ -1944,7 +1942,6 @@ static int csr_write(RISCVCPUState *s, uint32_t funct3, uint32_t csr, target_ulo
             // Allow, but ignore to write to performance counters mhpmcounter
             break;
 
-#ifdef SIMPOINT_BB
         case 0x8C2:
             if ((val & 3) == 3) {
                 fprintf(majordomo_stderr, "simpoint adjust maxinsns to %lld\n", (long long)val >> 2);
@@ -1969,7 +1966,6 @@ static int csr_write(RISCVCPUState *s, uint32_t funct3, uint32_t csr, target_ulo
               }
             }
             break;
-#endif
 
         default:
 
