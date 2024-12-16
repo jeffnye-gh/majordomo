@@ -65,18 +65,20 @@ export RISCV=/usr/local/riscv-embecosm-embedded-ubuntu2204-20240407
 
 ## Caveats/Known issues
 
-This version has incomplete/limited support for configurations beyond 
-but RV64 XLEN=64 FLEN=64.
+- Instruction counts reported to the console are not correct.
 
-Majordomo runs a subset of the riscv-isa-tests suite. The subset of tests run by
-Majordomo is recorded in tests/isa\_test\_suite/isa\_tests\_list.txt. One test
-per line, lines beginning with x are commented out.
+- Simulation speed results are not correct.
 
-As extension support is added tests from the riscv-isa-tests suite are enabled.
+- When Majordomo exits ungracefully, it can leave the terminal I/O in a state where keys are not echoed. When this occurs, type 'reset' into the console.
 
-Instruction counts reported to the console are not correct.
+- Using the `--ctrlc` is encouraged for all usage. Without `--ctrlc`, you can stop majordomo with the `kill <pid>` shell command.
 
-Simulation speed results are not correct.
+- This version has incomplete/limited support for configurations beyond but RV64 XLEN=64 FLEN=64.
+
+- Majordomo runs a subset of the riscv-isa-tests suite. The subset of tests run by Majordomo is recorded in tests/isa\_test\_suite/isa\_tests\_list.txt. One test per line, lines beginning with x are commented out.  As extension support is added tests from the riscv-isa-tests suite are enabled.
+
+
+
 
 ## Clone, build and run regression
 

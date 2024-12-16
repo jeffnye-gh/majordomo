@@ -13,7 +13,13 @@ CMN_SRC=cmn/crt.S cmn/syscalls.c
 # CC flags
 # ---------------------------------------------------------------------------
 STD = -O3 -nostdlib -nostartfiles -static -std=gnu99
+
 ARCH=-march=rv64gc_zba_zbb_zbc_zbs -mabi=lp64d -mcmodel=medany
+
+#TODO: This is future support
+#RVA23=rv64iacdfhmv_smstateen_sscofpmf_ssstateen_sstc_svinval_svnapot_svpbmt_zawrs_zba_zbb_zbc_zbs_zfa_zfhmin_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zicond_zihintntl_zihintpause_zihpm_zkt_zk_zkn_zknd_zkne_zknh_zbkb_zbkc_zbkx_smaia
+#ARCH=-march=$(RVA23) -mabi=lp64d -mcmodel=medany
+
 INC = -I./cmn -I./inc
 DEF = -D__riscv -DPREALLOCATE=1 \
       -Dzba_ENABLED=1 -Dzbb_ENABLED=1 -Dzbc_ENABLED=1 -Dzbs_ENABLED=1
@@ -42,6 +48,7 @@ default: all
 include dhry.mk
 # ---------------------------------------------------------------------------
 all: 
+	-mkdir -p bin traces
 	$(MAKE) ./bin/rvt_qsort.bare.elf
 	$(MAKE) ./bin/dhrystone_opt1.bare.elf
 	$(MAKE) ./bin/dhrystone_opt2.bare.elf
